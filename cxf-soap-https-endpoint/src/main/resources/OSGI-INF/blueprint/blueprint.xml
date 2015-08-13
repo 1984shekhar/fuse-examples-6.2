@@ -20,13 +20,13 @@
         <!-- list some properties for this test -->
         <cm:default-properties>
             <cm:property name="cert_path" value="/home/cpandey/NotBackedUp/Development/JBoss-Distributions-Fuse/jboss-fuse-6.2.0.redhat-133/etc/CertName.jks"/>
-            <cm:property name="cert_port" value="9001"/>
+            <cm:property name="cert_port" value="9003"/>
             <cm:property name="password" value="CertPassword"/>
         </cm:default-properties>
     </cm:property-placeholder>
 
   <cxf:cxfEndpoint id="personService"
-                          address="https://localhost:9001/soap/personService"
+                          address="https://localhost:9003/soap/personService"
                           serviceClass="com.mycompany.cxf.soap.model.PersonService"
                           />
                           <!-- <camelcxf:cxfEndpoint id="personService"

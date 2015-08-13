@@ -164,8 +164,8 @@
         <configuration>
           <instructions>
             <Bundle-SymbolicName>cxf-soap-ssl-endpoint</Bundle-SymbolicName>
-            <Private-Package>com.mycompany.cxf.soap.endpoint.*</Private-Package>
-            <Export-Package>com.mycompany.cxf.soap.model</Export-Package>
+            <!-- <Private-Package>com.mycompany.cxf.soap.endpoint.*</Private-Package>
+            <Export-Package>com.mycompany.cxf.soap.model</Export-Package> -->
             <Import-Package>*</Import-Package>
           </instructions>
         </configuration>
