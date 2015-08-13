@@ -5,9 +5,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.mycompany</groupId>
-  <artifactId>cxf-soap-endpoint</artifactId>
+  <artifactId>cxf-soap-https-endpoint</artifactId>
   <packaging>bundle</packaging>
-  <version>1.1</version>
+  <version>1.0-SNAPSHOT</version>
 
   <name>cxf-soap-endpoint</name>
   <url>http://www.myorganization.org</url>
@@ -163,7 +163,7 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Bundle-SymbolicName>cxf-soap-endpoint</Bundle-SymbolicName>
+            <Bundle-SymbolicName>cxf-soap-ssl-endpoint</Bundle-SymbolicName>
             <Private-Package>com.mycompany.cxf.soap.endpoint.*</Private-Package>
             <Export-Package>com.mycompany.cxf.soap.model</Export-Package>
             <Import-Package>*</Import-Package>
