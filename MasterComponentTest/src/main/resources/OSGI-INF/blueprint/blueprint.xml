@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+           xsi:schemaLocation="
+           http://www.osgi.org/xmlns/blueprint/v1.0.0
+           http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+
+    <!-- osgi blueprint property placeholder -->
+    <cm:property-placeholder id="placeholder" persistent-id="masterCamel">
+        <cm:default-properties>
+            <cm:property name="portNumber" value="8181"/>
+        </cm:default-properties>
+    </cm:property-placeholder>
+
+    <reference id="curator" interface="org.apache.curator.framework.CuratorFramework" />
+
+	<bean id="fabric-camel" class="io.fabric8.camel.FabricComponent">
+		<property name="curator" ref="curator" />
+	</bean>
+
+    <camelContext id="camel" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
+        <route id="failover-server">
+            <from uri="master:FailoverDemo:jetty:http://127.0.0.1:8189/master"/>
+            <log message="Request received : ${body}"/>
+            <setHeader headerName="karaf.name">
+                <simple>${sys.karaf.name}</simple>
+            </setHeader>
+            <transform>
+                <simple>Response from Zookeeper agent</simple>
+            </transform>
+        </route>
+    </camelContext>
+
+</blueprint>
