@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/blueprint"
+       xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+       xsi:schemaLocation="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.0.0.xsd
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+<cm:property-placeholder id="placeholder" persistent-id="org.jboss.quickstarts.fuse.salesforce" />
+	<bean id="salesforce"
+		class="org.apache.camel.component.salesforce.SalesforceComponent">
+		<property name="loginConfig">
+			<bean class="org.apache.camel.component.salesforce.SalesforceLoginConfig">
+				<property name="loginUrl" value="${loginUrl}"></property>
+				<property name="userName" value="${userName}"></property>
+				<property name="password" value="${password}"></property>
+				<property name="clientId" value="${clientId}"></property>
+				<property name="clientSecret" value="${clientSecret}"></property>
+			</bean>
+		</property>
+		<!-- <property name="config">
+			<bean
+				class="org.apache.camel.component.salesforce.SalesforceEndpointConfig">
+				<property name="sObjectName" value="${sObjectName}"></property>
+				<property name="sObjectClass" value="${sObjectClass}"></property>
+			</bean>
+		</property> -->
+		<property name="packages" value="${sObjectDTOPackages}"></property>
+	</bean>
+	<camelContext xmlns="http://camel.apache.org/schema/blueprint" id="salesforce-example-context">
+		<route id="sfRoute">
+			<from uri="timer://foo?repeatCount=1" />
+			<!-- uncomment below comment to insert records -->
+			<!-- <process ref="insertData"/>
+			<to uri="salesforce:createSObject?sObjectIdName=Price__c" /> -->
+			
+			<!-- below line fetches records -->
+				<to uri="salesforce:query?sObjectQuery=SELECT Price__c from Book__c&amp;sObjectClass=org.apache.camel.salesforce.dto.QueryRecordsBook__c" />
+				
+			<convertBodyTo type="java.lang.String" />
+			<log message="Query result back from Salesforce: ${body}" />
+		</route>
+	</camelContext>
+<bean id ="insertData" class="com.test.processor.TestProcessor"/>
+
+</blueprint>
