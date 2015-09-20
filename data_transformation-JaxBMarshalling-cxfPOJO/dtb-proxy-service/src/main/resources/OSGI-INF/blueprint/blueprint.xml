@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+       	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cxf="http://camel.apache.org/schema/blueprint/cxf"
+       xsi:schemaLocation="
+       http://camel.apache.org/schema/blueprint/cxf http://camel.apache.org/schema/blueprint/cxf/camel-cxf.xsd
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+	<cxf:cxfEndpoint id="ftProxyEndpoint" address="/FTProxyService/"
+		serviceClass="com.mycompany.proxy.service.FTProxyService" />
+		
+		<cxf:cxfEndpoint id="ftServiceEndpoint" address="http://localhost:8181/cxf/FTBusinessService/"
+		serviceClass="com.mycompany.business.service.FTService" />
+		
+	<bean class="com.mycompany.proxy.service.FTProxyServiceImpl" id="ftProxyServiceImpl"></bean>
+<bean class="com.mycompany.proxy.service.FilterString" id="filterString"/>
+
+	 <camelContext id="SRK_PROXY_CAMEL" xmlns="http://camel.apache.org/schema/blueprint">
+  <endpoint uri="dozer:P2BTransformation?sourceModel=com.mycompany.proxy.model.FTProxyRequest&amp;targetModel=ftbusinessservice.Arg0&amp;marshalId=ftbusinessservice&amp;mappingFile=P2BTransformation.xml" id="P2BTransformation"/>
+  <dataFormats>
+    <jaxb contextPath="ftbusinessservice" id="ftbusinessservice"/>
+  </dataFormats>
+  <route>
+    <from uri="cxf:bean:ftProxyEndpoint?loggingFeatureEnabled=true"/>
+    <setProperty propertyName="reqBody">
+      <simple>${in.body[0]}</simple>
+    </setProperty>
+    <log message="### SRK SOAP Operation Received: ${header.operationName}"/>
+    <log message="### SRK SOAP Request ${property.reqBody}"/>
+    <to ref="P2BTransformation"/>
+    <!-- <convertBodyTo type="java.lang.String"/>
+    <log message="### SRK SOAP After Transformation Request ${body}"/> -->
+   <!--  <to uri="xslt:file:///home/cpandey/NotBackedUp/Downloads/xslt/TMReq.xsl"/> 
+     <to uri="http://localhost:8181/cxf/FTBusinessService?bridgeEndpoint=true&amp;traceEnabled=true"/>-->
+   <bean ref="filterString"/>
+             <log message="### SRK SOAP After filter Request ${body}"/>
+            <!--  <convertBodyTo type="com.dtbafrica.business.model.FTRequest"></convertBodyTo> -->
+             <setHeader headerName="operationName">
+                <constant>postTransaction</constant>
+            </setHeader>
+            <setHeader headerName="operationNamespace">
+                <constant>http://service.business.mycompany.com/</constant>
+            </setHeader>
+            
+            <to uri="cxf:bean:ftServiceEndpoint"/>
+    <log message="### Business Service Response body ${body}"/>
+    <setBody>
+      <simple>${property.reqBody}</simple>
+    </setBody>
+    <bean ref="ftProxyServiceImpl" method="processSwift"/>
+    <log message="### FT ProcessSwift Response: ${body}"/>
+  </route>
+</camelContext>
+</blueprint>

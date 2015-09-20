@@ -1,0 +1,151 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:element name="arg0">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="ftBody">
+               <xs:annotation>
+                  <xs:documentation>Optional:</xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element type="xs:string" name="branch">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="creditAccount">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="creditAmount">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="creditBranch">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="creditCurrency">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="creditValueDate">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="debitAccount">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="debitAmount">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="debitBranch">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="debitCurrency">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="debitValueDate">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="internalRemarks">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="product">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="sourceRefNo">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="userRefNo">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="valueDate">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="ftHeader">
+               <xs:annotation>
+                  <xs:documentation>Optional:</xs:documentation>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element type="xs:string" name="branch">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="correlId">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="msgId">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="operation">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="password">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="service">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="sourceId">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="ubsComp">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                     <xs:element type="xs:string" name="userId">
+                        <xs:annotation>
+                           <xs:documentation>Optional:</xs:documentation>
+                        </xs:annotation>
+                     </xs:element>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+</xs:schema>
