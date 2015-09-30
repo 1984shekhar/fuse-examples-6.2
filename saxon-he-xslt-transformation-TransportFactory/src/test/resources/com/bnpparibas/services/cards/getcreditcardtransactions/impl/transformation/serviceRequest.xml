@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:api="http://www.bnpparibas.com/services/cards/GetCreditcardTransactions/api/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <api:GetCreditcardTransactions>
+         <api:customerId>1234567890</api:customerId>
+      </api:GetCreditcardTransactions>
+   </soapenv:Body>
+</soapenv:Envelope>

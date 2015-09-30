@@ -1,0 +1,14 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <api:GetCreditcardTransactionsResponse xmlns:api="http://www.bnpparibas.com/services/cards/GetCreditcardTransactions/api/">
+         <api:customerId>1234567890</api:customerId>
+         <api:transactions>
+            <api:transaction>
+               <api:amount>1224.12</api:amount>
+               <api:date>2015-01-01T09:00:00</api:date>
+               <api:description>Abhebung</api:description>
+            </api:transaction>
+         </api:transactions>
+      </api:GetCreditcardTransactionsResponse>
+   </soap:Body>
+</soap:Envelope>

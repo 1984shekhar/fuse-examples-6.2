@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TlmqGetCreditcardTransactionsRequest xmlns:api="http://www.bnpparibas.com/services/cards/GetCreditcardTransactions/api/">
+	<tlmqCustomerId>1234567890</tlmqCustomerId>
+	<tlmqData>Some Fixed Data</tlmqData>
+</TlmqGetCreditcardTransactionsRequest>
