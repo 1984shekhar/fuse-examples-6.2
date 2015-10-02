@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1443531843671
+Build-Jdk: 1.8.0_45
+Built-By: Konstantinos
+Bundle-ManifestVersion: 2
+Bundle-Name: sampleForNettyDisconnectionIssue
+Bundle-SymbolicName: sampleForNettyDisconnectionIssue
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Export-Package: com.mycompany.samplefornettydisconnectionissue;uses:="or
+ g.apache.camel,org.jboss.netty.buffer,org.apache.camel.component.netty,
+ org.jboss.netty.util,org.apache.log4j,org.jboss.netty.handler.codec.fra
+ me,org.apache.camel.builder,org.apache.camel.model";version="1.0.0.SNAP
+ SHOT"
+Import-Package: org.apache.camel;version="[2.15,3)",org.apache.camel.bui
+ lder;version="[2.15,3)",org.apache.camel.component.netty;version="[2.15
+ ,3)",org.apache.camel.model;version="[2.15,3)",org.apache.log4j;version
+ ="[1.2,2)",org.jboss.netty.buffer;version="[3.9,4)",org.jboss.netty.han
+ dler.codec.frame;version="[3.9,4)",org.jboss.netty.util;version="[3.9,4
+ )",org.osgi.service.blueprint;version="[1.0.0,2.0.0)"
+Tool: Bnd-1.50.0
