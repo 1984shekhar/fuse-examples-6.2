@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+	<bean id="loginService" class="org.eclipse.jetty.plus.jaas.JAASLoginService">
+		<property name="name" value="karaf" />
+		<property name="loginModuleName" value="karaf" />
+		<property name="roleClassNames">
+			<list>
+				<value>org.apache.karaf.jaas.boot.principal.RolePrincipal</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="identityService" class="org.eclipse.jetty.security.DefaultIdentityService" />
+	<bean id="constraint" class="org.eclipse.jetty.util.security.Constraint">
+		<property name="name" value="BASIC" />
+		<property name="roles">
+		<list><value>admin</value></list>
+		</property>
+		<property name="authenticate" value="true" />
+	</bean>
+
+	<bean id="constraintMapping" class="org.eclipse.jetty.security.ConstraintMapping">
+		<property name="constraint" ref="constraint" />
+		<property name="pathSpec" value="/*" />
+	</bean>
+
+	<bean id="securityHandler" class="org.eclipse.jetty.security.ConstraintSecurityHandler">
+		<property name="authenticator">
+			<bean class="org.eclipse.jetty.security.authentication.BasicAuthenticator" />
+		</property>
+		<property name="constraintMappings">
+			<list>
+			<ref component-id="constraintMapping"/>
+				<!-- <ref bean="constraintMapping" /> -->
+			</list>
+		</property>
+		<property name="loginService" ref="loginService" />
+		<property name="strict" value="false" />
+		<property name="identityService" ref="identityService" />
+	</bean>
+
+	<!-- <bean id="jetty" class="org.apache.camel.component.jetty8.JettyHttpComponent8">
+		<property name="sslContextParameters" ref="testSSLContext" />
+	</bean>
+
+	<sslContextParameters xmlns="http://camel.apache.org/schema/blueprint"
+		id="testSSLContext" camelContextId="myCamelId">
+		<secureSocketProtocols>
+			<secureSocketProtocol>TLSv1</secureSocketProtocol>
+		</secureSocketProtocols>
+		<keyManagers keyPassword="test_keystore">
+			<keyStore type="JKS" password="test_keystore"
+				resource="/NotBackedUp/cpandey/Development/FUSE-WORKSPACES/OtherWorkSpace/HTTPS_Example/src/testKeystore.jks" />
+		</keyManagers>
+		<trustManagers>
+			<keyStore type="JKS" password="test_keystore"
+				resource="/NotBackedUp/cpandey/Development/FUSE-WORKSPACES/OtherWorkSpace/HTTPS_Example/src/testKeystore.jks" />
+		</trustManagers>
+		<cipherSuitesFilter>
+			<include>.*</include>
+		</cipherSuitesFilter>
+	</sslContextParameters> -->
+	
+	<bean id="jetty" class="org.apache.camel.component.jetty8.JettyHttpComponent8">
+    <property name="sslSocketConnectorProperties">
+        <map>
+                    <entry key="password" value="testkeystore"/>
+                    <entry key="keyPassword" value="testkeystore"/>
+                    <entry key="keystore" value="/home/cpandey/test.jks"/>
+                    <!-- <entry key="needClientAuth" value="true"/> -->
+                    <!-- <entry key="truststore" value="/NotBackedUp/cpandey/Development/FUSE-WORKSPACES/OtherWorkSpace/HTTPS_Example/src/testKeystore.jks"/> -->
+        </map>
+    </property>
+</bean>
+<bean id="myBuilder" class="com.mycompany.camel.https.securityHandlers.MyRouteBuilder" />
+	<camelContext xmlns="http://camel.apache.org/schema/blueprint" id="myCamelId" trace="true">
+		<!-- <endpoint id="jetty-vehicle-rest-web-service-ep"
+			uri="jetty://https://localhost:9002/v2/?handlers=securityHandler&amp;matchOnUriPrefix=true&amp;httpMethodRestrict=POST" /> -->
+	<!-- <route id="route-1">
+			<from uri="jetty:https://0.0.0.0:9090/myapp/myservice/?handlers=securityHandler&amp;matchOnUriPrefix=true"/>
+			<log message="CamelHttpPath value is ${headers[CamelHttpPath]}"/>
+			<log message="The message contains ${body}" />
+		</route>  -->
+		
+
+				<routeBuilder ref="myBuilder"/>
+
+	</camelContext>
+
+</blueprint>
