@@ -10,8 +10,8 @@
 		<property name="serverName" value="lab-jboss-db.gsslab.pnq.redhat.com" />
 		<property name="portNumber" value="5432" />
 		<property name="databaseName" value="chandra_shekhar" />
-		<property name="user" value="postgres" />
-		<property name="password" value="RedHat1!" />
+		<property name="user" value="xxxx" />
+		<property name="password" value="xxxx" />
 		<property name="initialConnections" value="5" />
 		<property name="maxConnections" value="10" />		
 	</bean>
