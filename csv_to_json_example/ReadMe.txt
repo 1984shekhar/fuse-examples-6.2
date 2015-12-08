@@ -17,3 +17,10 @@ or Apache Karaf. You can run the following command from its shell:
 For more help see the Apache Camel documentation
 
     http://camel.apache.org/
+    
+    
+    Input csv file should have content like:
+6684181,Salvos Stores
+6684181,Salvos Stores
+6684181,Salvos Stores
+11696971,PC FIX IT - Victorian Vocational Volunteering
