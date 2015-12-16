@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:osgix="http://www.springframework.org/schema/osgi-compendium"
+   xmlns:osgi="http://www.springframework.org/schema/osgi"
+   xmlns:ctx="http://www.springframework.org/schema/context"
+   xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	  http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context 
+	  http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/osgi-compendium 
+	  http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd
+	  http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+	  
+	<osgix:cm-properties id="preProps" persistent-id="org.fusesource.example"/>
+	<ctx:property-placeholder properties-ref="preProps"></ctx:property-placeholder>
+	<bean id="helloBean" class="com.mycompany.spring.datasource.HelloBean">
+		<property name="say" value="${prefix}" />
+	</bean>
+	
+		<camelContext xmlns="http://camel.apache.org/schema/spring">
+		<route>
+			<from uri="timer:foo?period=5000" />
+			<setBody>
+				<method ref="helloBean" method="hello" />
+			</setBody>
+			<log message="The message contains ${body}" />
+		</route>
+	</camelContext>
+</beans>
