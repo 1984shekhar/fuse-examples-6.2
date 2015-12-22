@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:osgix="http://www.springframework.org/schema/osgi-compendium"
+   xmlns:osgi="http://www.springframework.org/schema/osgi"
+   xmlns:ctx="http://www.springframework.org/schema/context"
+   xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	  http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context 
+	  http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/osgi-compendium 
+	  http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd
+	  http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+	  
+	<osgix:cm-properties id="preProps" persistent-id="org.fusesource.example">
+		<prop key="vtnm.database.driver">oracle.jdbc.driver.OracleDriver</prop>
+		<prop key="vtnm.database.url">jdbc:oracle:thin:@lab-jboss-db.gsslab.pnq.redhat.com:1521:orcl</prop>
+		<prop key="vtnm.database.username">chandrashekhar</prop>
+		<prop key="vtnm.database.password">shekharchandra</prop>
+		<prop key="vtnm.database.poolsize">10</prop>
+		<prop key="vtnm.database.poolMaxIdle">10</prop>
+	</osgix:cm-properties>
+	<ctx:property-placeholder properties-ref="preProps"></ctx:property-placeholder>
+	<!-- <bean id="helloBean" class="com.mycompany.spring.datasource.HelloBean">
+		<property name="say" value="${prefix}" />
+	</bean> -->
+	<bean id="testDataSource"
+	    class="org.apache.commons.dbcp.BasicDataSource"
+	    destroy-method="close">
+	     <property name="driverClassName" value="${vtnm.database.driver}" />
+	    <property name="url" value="${vtnm.database.url}" />
+	    <property name="username" value="${vtnm.database.username}" />
+	    <property name="password" value="${vtnm.database.password}" />
+	    <property name="maxActive" value="${vtnm.database.poolsize}" />
+	    <property name="maxIdle" value="${vtnm.database.poolMaxIdle}"/>
+	    <property name="validationQuery" value="SELECT 1 FROM DUAL" />
+	    <property name="testOnBorrow" value="true" />
+	    <property name="testWhileIdle" value="true" />
+	    <property name="removeAbandoned" value="true"/>
+	    <property name="logAbandoned" value="true"/>
+	    <property name="removeAbandonedTimeout" value="600"/>
+    </bean>
+<!-- <osgi:service ref="testDataSource">
+		<osgi:interfaces>
+			<value>javax.sql.DataSource</value>
+		</osgi:interfaces>
+		<osgi:service-properties>
+			<entry key="name" value="testDataSource" />
+		</osgi:service-properties>
+	</osgi:service>  -->
+	
+	<osgi:service ref="testDataSource">
+		<osgi:interfaces>
+			<value>javax.sql.DataSource</value>
+		</osgi:interfaces>
+		<osgi:service-properties>
+			<entry key="osgi.jndi.service.name" value="jdbc/testds"/> 
+    		<entry key="datasource.name" value="Oracle"/> 
+		</osgi:service-properties>
+	</osgi:service>
+	
+	<!--  <osgi:service ref="dataSource" interface="javax.sql.DataSource">
+        <osgi:service-properties>
+            
+                This will allow to lookup this OSGi service using two JNDI names:
+                 - "osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=jdbc/transactionsdb)"
+                 - "osgi:service/jdbc/transactionsdb"
+                Using any.other.key makes the service available only using JNDI name:
+                 - "osgi:service/javax.sql.DataSource/(any.other.key=jdbc/transactionsdb)"
+           
+            <entry key="osgi.jndi.service.name" value="jdbc/testds" />
+            <entry key="aries.xa.username" value="[[jdbc.user]]" />
+            <entry key="aries.xa.password" value="[[jdbc.password]]" />
+            <entry key="aries.xa.pooling" value="true" />
+            <entry key="aries.xa.poolMaxSize" value="10" />
+            <entry key="aries.xa.poolMinSize" value="0" />
+            <entry key="aries.xa.transaction" value="local" />default for javax.sql.DataSource
+            <entry key="aries.xa.exceptionSorter" value="known" />
+        </osgi:service-properties>
+    </osgi:service> -->
+		
+</beans>
