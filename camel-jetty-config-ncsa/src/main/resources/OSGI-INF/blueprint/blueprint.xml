@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/blueprint"
+       xmlns:camelcxf="http://camel.apache.org/schema/blueprint/cxf" 
+       xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration"
+       xsi:schemaLocation="
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+       http://cxf.apache.org/transports/http-jetty/configuration http://cxf.apache.org/schemas/configuration/http-jetty.xsd">
+
+  <bean id="helloBean" class="test.HelloBean"></bean>
+  
+<camelcxf:rsServer id="rsService" address="http://localhost:8183/rest"
+		serviceClass="test.RestImpl"
+		loggingFeatureEnabled="true" loggingSizeLimit="20" />
+
+<httpj:engine-factory bus="cxf">
+ <httpj:engine port="8183">
+  <httpj:handlers>
+   <bean class="org.eclipse.jetty.server.handler.RequestLogHandler">
+     <property name="requestLog">
+       <bean class="org.eclipse.jetty.server.NCSARequestLog">
+       <!-- <property name="directory" value="/home/cpandey/test"/> -->
+       <property name="filename" value="/home/cpandey/test/tym.log"/>
+       <!-- bean class="org.mortbay.jetty.NCSARequestLog"> -->
+        <property name="filenameDateFormat" value="yyyy_MM_dd"/>
+       <!--  <property name="LogTimeZone" value="Australia/Adelaide"/> -->
+        <property name="retainDays" value="90"/>
+        <property name="append" value="true"/>
+       </bean>
+     </property>
+   </bean>
+  </httpj:handlers>
+ </httpj:engine>
+</httpj:engine-factory>
+
+
+		
+  <camelContext id="blueprintContext" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
+    <route id="checkStatus">
+    <from uri="cxfrs:bean:rsService?bindingStyle=SimpleConsumer"/>
+    <setBody>
+    <method ref="helloBean" method="hello"/>
+    </setBody>
+    </route>
+  </camelContext>
+</blueprint>
