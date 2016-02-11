@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema elementFormDefault="qualified"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="https://www.testwsdl.net/">	
+	<xsd:element name="GetSecurityTokenResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="0" maxOccurs="1"
+							name="GetSecurityTokenResult">
+							<xsd:complexType mixed="true">
+								<xsd:sequence>
+									<xsd:any />
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+</xsd:schema>
+	
+	

@@ -1,0 +1,8 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <GetSecurityToken xmlns="https://www.peoplestreme.net/">
+         <userid>3298</userid>
+         <password>Welcome3</password>
+      </GetSecurityToken>
+   </soap:Body>
+</soap:Envelope>

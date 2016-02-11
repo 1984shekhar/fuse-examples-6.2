@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:cxf="http://camel.apache.org/schema/cxf"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+       http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       ">
+
+<!-- 
+ <bean id="hitsRouteBuilder" class="com.fuse.sample.routes.HitsRoute"/>
+ <bean id="marketPlaceRouteBuilder" class="com.fuse.sample.routes.marketplace.MarketPlaceRoute"/> -->
+ <!-- <bean id="mktBean" class="io.swagger.api.OrderApi"/> -->
+ 
+ <!-- <bean id="marketPlaceService" class="io.swagger.api.OrderApi"></bean> -->
+<!-- <bean id="loggingFeature" class="org.apache.cxf.feature.LoggingFeature" /> --> 	
+<!-- <bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/> -->
+<bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
+
+	<!-- Beans for HITS -->
+	
+	<!--  <bean id="prepareBodyHitsEnroll" class="com.fuse.sample.processor.hits"/>
+	 <bean id="parseBodyForHitsEnroll" class="com.fuse.sample.processor.hits"/>
+	  -->
+	 <bean id="prepareBodyHitsGetServicePlan" class="com.fuse.sample.processor.hits.PrepareBodyForHitsGetServicePlan"/>
+	 <bean id="parseBodyForHitsGetServicePlan" class="com.fuse.sample.processor.hits.ParseBodyForHitsGetServicePlanDetailAndSku"/>
+
+	 <bean id="prepareBodyHitsEnroll" class="com.fuse.sample.processor.hits.PrepareBodyForHitsEnroll"/>
+	 <bean id="parseBodyForHitsEnroll" class="com.fuse.sample.processor.hits.ParseBodyForHitsEnroll"/>
+	
+ <!-- Beans for MarketPlase  -->
+ <bean id="prepareBodyForMarketPlace" class="com.fuse.sample.processors.marketplace.PrepareBodyForMarketPlace"/>
+ <bean id="parseBodyForMarketPlace" class="com.fuse.sample.processors.marketplace.ParseBodyForMarketPlace"/>
+ 
+
+ 
+ <!-- Defined the server endpoint to for MarketPlace-->
+  <cxf:rsServer id="marketPlaceServer" address="http://localhost:8200/services/orderservice"
+    serviceClass="io.swagger.api.OrderApi"
+    loggingFeatureEnabled="true" loggingSizeLimit="20">
+    <cxf:providers>
+       <ref bean="jsonProvider"/>
+    </cxf:providers>
+  </cxf:rsServer>
+  
+   <cxf:rsServer id="hitsInsuranceServer" address="http://localhost:8200/services/enroll"
+    serviceClass="io.swagger.api.InsuranceApi" 
+     loggingFeatureEnabled="true" loggingSizeLimit="20">
+    <cxf:providers>
+       <ref bean="jsonProvider"/>
+    </cxf:providers>
+  </cxf:rsServer> 
+  
+
+ 
+  <camelContext xmlns="http://camel.apache.org/schema/spring">
+
+	<endpoint uri="cxfrs:http://localhost:8200/service" id="hitsPlanDetailEndpoint">
+			<property key="resourceClass" value="io.swagger.api.ServicePlanApi" />
+			<property key="bindingStyle" value="SimpleConsumer" />
+		</endpoint>
+ 
+  
+	  <endpoint pattern="InOut" id="hitsEndpoint" 
+			uri="cxf:https://services.uat.ca.esecuritel.com/eSecuritel/HITS/IntegrationService/EnrollmentService.svc">
+			<property key="serviceClass" value="org.tempuri.IEnrollmentService" />
+		</endpoint>
+		
+		 <endpoint pattern="InOut" id="marketPlaceEndpoint" 
+			uri="cxf:https://uat.marketplace.oms.webservices.brightstarcorp.com/OrderManagementService.asmx">
+			<property key="serviceClass" value="jaxb.marketplace.com.brightstar.marketplace.svcs.OrderManagementServiceSoap" />
+		</endpoint>
+		
+		<!-- Hits GetSetvicePlanAndSKU -->
+		  <route id="hitsroute">
+	  	   <from ref="hitsPlanDetailEndpoint"/>
+		  	<process ref="prepareBodyHitsGetServicePlan"/>
+		  	<log message=" **************prepareBodyHitsGetServicePlan:  ${body}"></log>
+		  	<to ref="hitsEndpoint"/>
+		  	<log message=" **************parseBodyForHitsGetServicePlan: ${body}"></log>
+		  	<process ref="parseBodyForHitsGetServicePlan" />
+			<marshal>
+				<json library="Jackson"/>
+			</marshal>
+		  </route> 
+		
+		<!-- Hits Enroll  -->  
+		  <route id="hitsInsuranceRoute">
+	  	  <from uri="cxfrs://bean://hitsInsuranceServer"/>
+		  	<process ref="prepareBodyHitsEnroll"/>
+		  	<log message="${body}"></log>
+		  	<to ref="hitsEndpoint"/>
+		  	<process ref="parseBodyForHitsEnroll" />
+			<marshal>
+				<json library="Jackson" />
+			</marshal>
+		  </route>
+		  
+		<!-- MarketPlace CreateAndConfirm  -->		
+		  <route id="marketroute">
+	  	  <from uri="cxfrs://bean://marketPlaceServer"/>
+		  	<process ref="prepareBodyForMarketPlace"/>
+		  	<to ref="marketPlaceEndpoint"/>
+		  	<process ref="parseBodyForMarketPlace" />
+			<marshal>
+				<json library="Jackson" />
+			</marshal>
+		  </route>
+		      
+      
+  </camelContext>
+
+</beans>

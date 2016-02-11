@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:GetSecurityToken xmlns:p="https://www.peoplestreme.net/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://www.peoplestreme.net/ GetSecurityToken.xsd ">
+	<p:userid>3298</p:userid>
+	<p:password>Welcome3</p:password>
+</p:GetSecurityToken>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+	xmlns:tns="https://www.testwsdl.net/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+	targetNamespace="https://www.testwsdl.net/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+	<wsdl:types>
+		<xsd:schema elementFormDefault="qualified"
+			targetNamespace="https://www.testwsdl.net/">
+			<xsd:element name="GetXMLResult">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="0" maxOccurs="1" name="sqltoken"
+							type="xsd:string" />
+						<xsd:element minOccurs="0" maxOccurs="1" name="sqlquery"
+							type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="GetXMLResultResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="0" maxOccurs="1"
+							name="GetXMLResultResult">
+							<xsd:complexType mixed="true">
+								<xsd:sequence>
+									<xsd:any />
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="GetSecurityToken">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="0" maxOccurs="1" name="userid"
+							type="xsd:string" />
+						<xsd:element minOccurs="0" maxOccurs="1" name="password"
+							type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="GetSecurityTokenResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element minOccurs="0" maxOccurs="1"
+							name="GetSecurityTokenResult">
+							<xsd:complexType mixed="true">
+								<xsd:sequence>
+									<xsd:any />
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="GetXMLResultSoapIn">
+		<wsdl:part name="parameters" element="tns:GetXMLResult" />
+	</wsdl:message>
+	<wsdl:message name="GetXMLResultSoapOut">
+		<wsdl:part name="parameters" element="tns:GetXMLResultResponse" />
+	</wsdl:message>
+	<wsdl:message name="GetSecurityTokenSoapIn">
+		<wsdl:part name="parameters" element="tns:GetSecurityToken" />
+	</wsdl:message>
+	<wsdl:message name="GetSecurityTokenSoapOut">
+		<wsdl:part name="parameters" element="tns:GetSecurityTokenResponse" />
+	</wsdl:message>
+	<wsdl:portType name="PS_WSAccessSoap">
+		<wsdl:operation name="GetXMLResult">
+			<wsdl:input message="tns:GetXMLResultSoapIn" />
+			<wsdl:output message="tns:GetXMLResultSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="GetSecurityToken">
+			<wsdl:input message="tns:GetSecurityTokenSoapIn" />
+			<wsdl:output message="tns:GetSecurityTokenSoapOut" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="PS_WSAccessSoap" type="tns:PS_WSAccessSoap">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="GetXMLResult">
+			<soap:operation soapAction="https://www.testwsdl.net/GetXMLResult"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetSecurityToken">
+			<soap:operation soapAction="https://www.testwsdl.net/GetSecurityToken"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="PS_WSAccessSoap12" type="tns:PS_WSAccessSoap">
+		<soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="GetXMLResult">
+			<soap12:operation soapAction="https://www.testwsdl.net/GetXMLResult"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetSecurityToken">
+			<soap12:operation soapAction="https://www.testwsdl.net/GetSecurityToken"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="PS_WSAccess">
+		<wsdl:port name="PS_WSAccessSoap" binding="tns:PS_WSAccessSoap">
+			<soap:address
+				location="https://abc/xyz/lmn.asmx" />
+		</wsdl:port>
+		<wsdl:port name="PS_WSAccessSoap12" binding="tns:PS_WSAccessSoap12">
+			<soap12:address
+				location="https://abc/xyz/lmn.asmx" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
