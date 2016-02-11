@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:osgi="http://www.springframework.org/schema/osgi"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+  
+
+  <camelContext xmlns="http://camel.apache.org/schema/spring">
+    <endpoint uri="cxfrs:http://localhost:8200/insurence" id="hitsEnrollEnpoint">
+				<property key="resourceClass" value="com.mycompany.rest.endpoint.CustomerService" />
+				<property key="bindingStyle" value="SimpleConsumer" /> 
+		</endpoint>
+		
+		<endpoint uri="cxfrs:http://localhost:8200/servicePlan" id="hitsPlanDetailEndpoint">
+				<property key="resourceClass" value="com.mycompany.rest.endpoint.CustomerService" />
+				<property key="bindingStyle" value="SimpleConsumer" /> 
+		</endpoint>
+		
+		<route id="hitsEnroleRoute">
+			<from ref="hitsEnrollEnpoint" />
+				<log message="${body}" />
+				<setBody><constant>insurence</constant></setBody>
+				<log message="${body}" />
+				<!-- <process ref="parseBodyForHitsEnroll" /> -->
+		</route>
+		
+		<route id="hitsGetServicePlanDetailAndSkuRoute">		
+			<from ref="hitsPlanDetailEndpoint" />
+				<log message="${body}" />
+				<setBody><constant>servicePlan</constant></setBody>
+				<log message="${body}" />
+		</route>
+  </camelContext>
+
+</beans>
