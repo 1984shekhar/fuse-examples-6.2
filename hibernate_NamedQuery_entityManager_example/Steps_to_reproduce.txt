@@ -1,0 +1,33 @@
+Steps to reproduce the isuue
+
+Run "mvn clean install" command for :
+i)Hibernate-JPA-Employee
+ii)mariadb-datasource
+
+Step 1>>>Install Following Bundles:
+-----------------------------------
+	features:install jndi
+	features:install jpa
+	features:install hibernate
+        osgi:install -s mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-dbcp/1.4_3
+
+Step 2>>>Install the driver(I have used mariadb, require to download the driver jar)
+-----------------------------------
+         osgi:install -s wrap:file:///Downloads/Jars/mariadb-java-client-1.1.9.jar 
+
+Step 3>>>Install datasource bundle
+-----------------------------------
+         osgi:install -s mvn:demo.datasource/mariadb-datasource/1.0
+
+Step 4>>>Install employee-hibernate-jpa bundle
+----------------------------------------------
+	osgi:install -s mvn:demo.jpa/employee-hibernate-jpa/1.0
+
+	There will probably be no errors and the application will initialize correctly, like in the output example below:
+        ~~~~~~~~~~~~
+	JBossFuse:karaf@root> EntityManager: org.hibernate.ejb.EntityManagerImpl@1a2d42bb
+	TYPEDQuery Result := 0
+	~~~~~~~~~~~~
+
+
+
