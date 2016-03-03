@@ -27,8 +27,8 @@
   </camelContext>
   
     <bean id="credentials" class="com.amazonaws.auth.BasicAWSCredentials">
-    <argument value="AKIAICGUS2PK367H3UJQ"/>
-    <argument value="klQdUkHIxMIOvl4o7s4u0KwYfBg9uKbljF1+JMRt"/>
+    <argument value="abc"/>
+    <argument value="xyz"/>
   </bean>
 
   <bean id="awsRegion" class="com.amazonaws.regions.RegionUtils" factory-method="getRegion">
