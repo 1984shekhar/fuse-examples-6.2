@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:camel="http://camel.apache.org/schema/blueprint"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.2.0"
+           xsi:schemaLocation="
+                http://www.osgi.org/xmlns/blueprint/v1.0.0
+                http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+                http://camel.apache.org/schema/blueprint
+                http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+    <!-- <bean id="appContext" class="com.abc.test.app.AppContext" factory-method="InitCamelContext"
+          depends-on="myCamelContext">
+        <argument ref="myCamelContext"/>
+    </bean>  -->
+    <camelContext id="myCamelContext"  managementNamePattern="#name#-#version#" useBlueprintPropertyResolver="true" trace="false" streamCache="true"
+                  xmlns="http://camel.apache.org/schema/blueprint">
+        <propertyPlaceholder id="properties" location="blueprint:test.blueprint.placeholder" />
+        <package>com.abc.test.routes</package>
+    </camelContext>
+
+    <!-- Quartz component bean  -->
+    <bean id="quartz2" class="org.apache.camel.component.quartz2.QuartzComponent">
+    <property name="enableJmx" value="false"/>
+        <property name="properties">
+		<props>
+			<prop key="org.quartz.scheduler.instanceName" value="${org.quartz.scheduler.instanceName}" />
+			<prop key="org.quartz.scheduler.instanceId" value="${org.quartz.scheduler.instanceId}" />
+			
+			<prop key="org.quartz.scheduler.rmi.export" value="${org.quartz.scheduler.rmi.export}" />
+			<prop key="org.quartz.scheduler.rmi.proxy" value="${org.quartz.scheduler.rmi.proxy}" />
+			<prop key="org.quartz.scheduler.jmx.export" value="${org.quartz.scheduler.jmx.export}" />
+			<prop key="org.quartz.scheduler.jobFactory.class" value="${org.quartz.scheduler.jobFactory.class}" />
+
+			<prop key="org.quartz.threadPool.class" value="${org.quartz.threadPool.class}" />
+			<prop key="org.quartz.threadPool.threadCount" value="${org.quartz.threadPool.threadCount}" />
+			
+
+			<prop key="org.quartz.jobStore.class" value="${org.quartz.jobStore.class}" />
+			<prop key="org.quartz.jobStore.driverDelegateClass" value="${org.quartz.jobStore.driverDelegateClass}" />
+			<prop key="org.quartz.jobStore.useProperties" value="${org.quartz.jobStore.useProperties}" />
+			<prop key="org.quartz.jobStore.dataSource" value="${org.quartz.jobStore.dataSource}" />
+			<prop key="org.quartz.jobStore.tablePrefix" value="${org.quartz.jobStore.tablePrefix}" />
+			<prop key="org.quartz.jobStore.isClustered" value="${org.quartz.jobStore.isClustered}" />
+			<prop key="org.quartz.dataSource.quartzDataSource.jndiURL" value="${org.quartz.dataSource.quartzDataSource.jndiURL}" />					
+		</props>
+	</property>
+    </bean>
+
+    <cm:property-placeholder persistent-id="com.abc.test.scheduler" 
+                             id="test.blueprint.placeholder" update-strategy="reload">
+        <cm:default-properties>
+        	
+        	<cm:property name="my.cron.exp" value="0+0/2+*+?+*+*" />
+			<!-- Quartz2 JDBC Jobstore -->
+			<cm:property name="org.quartz.scheduler.instanceName" value="MyScheduler" />
+			<cm:property name="org.quartz.scheduler.instanceId" value="AUTO" />
+			
+			<cm:property name="org.quartz.scheduler.rmi.export" value="false" />
+			<cm:property name="org.quartz.scheduler.rmi.proxy" value="false" />
+			<cm:property name="org.quartz.scheduler.jmx.export" value="true" />
+			<cm:property name="org.quartz.scheduler.jobFactory.class" value="org.quartz.simpl.SimpleJobFactory" />
+
+			<cm:property name="org.quartz.threadPool.class" value="org.quartz.simpl.SimpleThreadPool" />
+			<cm:property name="org.quartz.threadPool.threadCount" value="5" />
+			
+			<cm:property name="org.quartz.jobStore.class" value="org.quartz.impl.jdbcjobstore.JobStoreTX" />
+			<!-- <cm:property name="org.quartz.jobStore.driverDelegateClass" value="org.quartz.impl.jdbcjobstore.oracle.OracleDelegate" /> -->
+			<cm:property name="org.quartz.jobStore.driverDelegateClass" value="org.quartz.impl.jdbcjobstore.StdJDBCDelegate" />
+			<cm:property name="org.quartz.jobStore.useProperties" value="false" />
+			<cm:property name="org.quartz.jobStore.dataSource" value="quartzDataSource" />
+			<cm:property name="org.quartz.jobStore.tablePrefix" value="QRTZ_" />
+			<cm:property name="org.quartz.jobStore.isClustered" value="true" />
+			<cm:property name="org.quartz.dataSource.quartzDataSource.jndiURL" value="osgi:service/jdbc/quartz_datasource" />
+			<!-- <cm:property name="org.quartz.dataSource.quartzDataSource.jndiURL" value="osgi:service/jdbc/testds" /> -->
+
+        </cm:default-properties>
+    </cm:property-placeholder>
+
+</blueprint>

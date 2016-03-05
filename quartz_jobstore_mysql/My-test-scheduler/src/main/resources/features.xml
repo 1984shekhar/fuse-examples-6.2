@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<features name="my-quartz-scheduler-test-repository">
+    <feature name="my-quartz-scheduler-test" version="${project.version}" start-leve="60"
+             description="my-quartz-scheduler-test" >
+
+        <feature dependency="true" version="${camel.version}">camel-quartz2</feature>
+        <feature dependency="true" version="${camel.version}">camel-ftp</feature>
+
+        <bundle start-level="60">mvn:org.apache.commons/commons-lang3/${commons.langs3.version}</bundle>
+        <bundle start-level="77">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-dbcp/${servicemix.bundles.version}</bundle>
+        <bundle start-level="77">wrap:mvn:org.springframework/spring-jdbc/${springframework.version}</bundle>        
+    </feature>
+</features>

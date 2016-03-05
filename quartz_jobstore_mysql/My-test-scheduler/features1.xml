@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features name="featurequartz">
+    <feature name="featurequartz" version="${project.version}" description="Test">
+        <bundle start-level="85">
+            mvn:com.abc.test/my-quartz-scheduler/1.25.HA
+        </bundle>
+    </feature>
+</features>
