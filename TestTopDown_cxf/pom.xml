@@ -82,6 +82,12 @@
       <artifactId>camel-cxf</artifactId>
       <version>2.15.1.redhat-620133</version>
     </dependency>
+    <dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>sqljdbc</artifactId>
+			<version>4.0</version>
+			<type>bundle</type>
+		</dependency>
 
   </dependencies>
 
@@ -150,7 +156,64 @@
         </configuration>
       </plugin>
 
-    </plugins>
+			<!-- Retrieve all of the dependencies specified in the features.xml files 
+				and store them in the target/ssa-repo directory so the files can be compressed 
+				and deployed -->
+			<plugin>
+				<groupId>org.apache.karaf.tooling</groupId>
+				<artifactId>features-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-features-to-repo</id>
+						<phase>install</phase>
+						<goals>
+							<goal>add-features-to-repo</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>file:/NotBackedUp/cpandey/Development/ChandraShekhar_GIT/Fuse_6.2/fuse-examples-6.2/TestTopDown_cxf/src/test/resources/features.xml</descriptor>
+							</descriptors>
+							<features>
+								<feature>test-features</feature>
+							</features>
+							<addTransitiveFeatures>true</addTransitiveFeatures>
+							<repository>${basedir}/target/local-repo</repository>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Do final assembly (tar/zip) of patch artifacts -->
+			<!-- make sure to include this apps feature file -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unix-bin</id>
+						<phase>install</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/descriptors/unix-bin.xml</descriptor>
+							</descriptors>
+							<finalName>${project.artifactId}-${project.version}
+							</finalName>
+							<tarLongFileMode>gnu</tarLongFileMode>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-maven-plugin</artifactId>
+				<configuration>
+					<useBlueprint>true</useBlueprint>
+				</configuration>
+			</plugin>
+		</plugins>
   </build>
 
 </project>
