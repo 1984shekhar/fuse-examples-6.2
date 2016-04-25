@@ -11,14 +11,14 @@
 
   <camelContext xmlns="http://camel.apache.org/schema/blueprint">
   
-  <endpoint id="hitsEndpoint" 
+  <!-- <endpoint id="hitsEndpoint" 
                         uri="cxf:http://localhost:8080/TestWebService/services/PersonServicePort?serviceClass=com.mycompany.cxf.soap.skeleton.PersonService&amp;dataFormat=MESSAGE">
-                </endpoint>
+                </endpoint> -->
   
   <route shutdownRoute="Default" id="timerToLog">
     <from uri="file:/home/cpandey/NotBackedUp/Downloads/Test?noop=true"/>
     <log message="The message contains ${body}"/>
-    <to uri="cxf:http://localhost:8080/TestWebService/services/PersonServicePort?serviceClass=com.mycompany.cxf.soap.skeleton.PersonService&amp;dataFormat=MESSAGE"/>
+    <to uri="cxf:http://localhost:8080/TestWebService/services/PersonServicePort?serviceName=PersonService&amp;dataFormat=MESSAGE&amp;portName=PersonServicePort"/>
      <!-- <to ref="hitsEndpoint"/> -->
      <log message="The message contains ${body}"/>
   </route>
