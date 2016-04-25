@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+  <bean id="helloBean" class="com.mycompany.camel.cxf.httpUrl.HelloBean">
+      <property name="say" value="Hi from Camel"/>
+  </bean>
+
+  <camelContext xmlns="http://camel.apache.org/schema/blueprint">
+  
+  <endpoint id="hitsEndpoint" 
+                        uri="cxf:http://localhost:8080/TestWebService/services/PersonServicePort?serviceClass=com.mycompany.cxf.soap.skeleton.PersonService&amp;dataFormat=MESSAGE">
+                </endpoint>
+  
+  <route shutdownRoute="Default" id="timerToLog">
+    <from uri="file:/home/cpandey/NotBackedUp/Downloads/Test?noop=true"/>
+    <log message="The message contains ${body}"/>
+    <to uri="cxf:http://localhost:8080/TestWebService/services/PersonServicePort?serviceClass=com.mycompany.cxf.soap.skeleton.PersonService&amp;dataFormat=MESSAGE"/>
+     <!-- <to ref="hitsEndpoint"/> -->
+     <log message="The message contains ${body}"/>
+  </route>
+</camelContext>
+
+</blueprint>
