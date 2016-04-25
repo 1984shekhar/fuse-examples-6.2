@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mod="http://model.soap.cxf.mycompany.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <mod:getPerson>
+         <id>2</id>
+      </mod:getPerson>
+   </soapenv:Body>
+</soapenv:Envelope>
