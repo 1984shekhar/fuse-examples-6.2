@@ -1,0 +1,40 @@
+<blueprint default-activation="eager"
+		   xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" 
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws" 
+		   xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
+		   xmlns:cxf="http://camel.apache.org/schema/blueprint/cxf" 
+		   xmlns:cxfi="http://cxf.apache.org/blueprint/core"
+		   xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+		   xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+		   xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0" 
+		   xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+		   xsi:schemaLocation="http://cxf.apache.org/blueprint/jaxrs 
+		                       http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
+	                           http://cxf.apache.org/blueprint/core 
+	                           http://cxf.apache.org/schemas/blueprint/core.xsd">
+
+	<cxfi:bus>
+        <cxfi:features>
+            <cxfi:logging/>
+        </cxfi:features>
+    </cxfi:bus>
+
+	<cxf:rsServer id="rs-server" address="/test2" serviceClass="com.sample.protobuff.tutorial.ServiceActivate" loggingFeatureEnabled="true">
+		<cxf:providers>
+			<bean class="com.sample.protobuff.tutorial.ProtobufMessageBodyReader"/>
+		</cxf:providers>
+	</cxf:rsServer>
+
+	<camelContext xmlns="http://camel.apache.org/schema/blueprint">
+		<dataFormats>
+	        <protobuf id="addressProto" instanceClass="com.sample.protobuff.tutorial.AddressBookProtos$Person" />
+	    </dataFormats>
+		<route id="aip-service-activate" streamCache="true">
+			<from uri="cxfrs:bean:rs-server?resourceClasses=com.sample.protobuff.tutorial.ServiceActivate" />
+			<unmarshal ref="addressProto" />
+			<log message="BODY: ${body}"/>
+		</route>
+	</camelContext>
+
+</blueprint>

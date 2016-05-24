@@ -1,0 +1,111 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.sample</groupId>
+	<artifactId>protobuff-test-cxf</artifactId>
+	<packaging>bundle</packaging>
+	<version>3.0.0-SNAPSHOT</version>
+	
+
+	<properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jboss.fuse.bom.version>6.2.1.redhat-084</jboss.fuse.bom.version>
+    </properties>
+    
+    <dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.jboss.fuse.bom</groupId>
+				<artifactId>jboss-fuse-parent</artifactId>
+				<version>${jboss.fuse.bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-cxf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-swagger</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.aries.jpa</groupId>
+			<artifactId>org.apache.aries.jpa.container</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-protobuf</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>commons-beanutils</groupId>
+		    <artifactId>commons-beanutils</artifactId>
+		</dependency>
+			
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.karaf.tooling</groupId>
+					<artifactId>karaf-maven-plugin</artifactId>
+					<extensions>true</extensions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.karaf.tooling</groupId>
+				<artifactId>karaf-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<version>2.4.0</version>
+				<configuration>
+					<instructions>
+						<Export-Package>
+							
+						</Export-Package>
+						<Import-Package>
+							com.wordnik.swagger.annotations,
+							org.apache.cxf.jaxrs.swagger,
+							com.google.gson,
+							javax.validation.constraints,
+							javax.ws.rs;version="[2.0,3)",
+							javax.ws.rs.core;version="[2.0,3)",
+							javax.xml.bind.annotation,
+							com.fasterxml.jackson.core.type,
+							org.apache.camel,
+							org.apache.commons.lang3,
+							org.apache.camel.component.jackson,
+							org.apache.camel.component.cxf,
+							org.apache.cxf.message,
+							org.slf4j,
+							com.fasterxml.jackson.core,
+							com.fasterxml.jackson.databind,
+							com.google.protobuf,
+							javax.ws.rs.ext,
+						</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
