@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features name="get-started">
+  <feature name="get-started-basic">
+    <bundle>mvn:org.apache.aries/org.apache.aries.util/1.0.1.redhat-610379</bundle>
+    <bundle>mvn:org.apache.aries.jndi/org.apache.aries.jndi.api/1.0.0</bundle>
+  </feature>
+</features>
