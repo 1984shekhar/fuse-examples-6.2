@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+  <camelContext xmlns="http://camel.apache.org/schema/blueprint">
+    <route id="timerToLog">
+    <from uri="timer://foo?repeatCount=1"/>
+    <setBody><constant>textbox</constant></setBody>
+      <choice>
+   <when>
+<simple>${body} regex '[a-z].*'</simple>
+         <log id="_log1" message="Data --> ${body}"/>
+   </when>
+   <otherwise>
+     <log id="_log2" message="otherwise --> ${body}"/>
+   </otherwise>
+</choice>
+    </route>
+  </camelContext>
+
+</blueprint>
