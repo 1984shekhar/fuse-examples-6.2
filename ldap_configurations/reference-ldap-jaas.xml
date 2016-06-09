@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+  xmlns:jaas="http://karaf.apache.org/xmlns/jaas/v1.0.0"
+  xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+  xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0">
+
+<!--
+
+When configuring a new JAAS realm, the highest 'rank' take precedence.  In this sample,
+'rank' is set to 100 to indicate that this JAAS module should be used instead of others with
+a lower rank.
+
+This JAAS realm is set to 'required'.  This means that users must authenticate sucessfully
+against this realm.  There are several scenarios where having multiple JAAS realms is needed.
+If this is the case, then set the flags to 'sufficient'.  Technically, the last module
+listed could be marked 'required', 'sufficient' also works.
+
+For the LDAP configuration, the 'authentication' property can be 'simple' or 'none'.  By
+seeting 'authentication' to 'none', an anonymous LDAP bind will be used when searching for
+users and roles.  The 'connection.username' and 'connection.password' are ignored.  If 
+authentication is set to 'simple', then the 'connection.username' and 'connection.password'
+are used to do an authenticated bind when searching for users and roles.
+
+The user.filter follows standard LDAP filter rules.  A simple sample is shown below.  Search
+starting very high up in the directory for any object that has (uid=%u) - the user name.
+This could be enhanced for efficiency.  Depending on what ObjectClass is being used for the
+user, this search could be changed to:
+
+For Microsoft Active Directory:
+(&amp;(objectCategory=Person)(samAccountName=%u))
+
+Other popular LDAP servers - default for 389-DS:
+(&amp;(objectClass=InetOrgPerson)(uid=%u))
+
+For the 'role.filter', versions of JAAS Modules prior to 2.3.0.redhat-611423 only had '%u' and
+'%dn' available for the expression.  The property '%u' is the user name, while '%dn' is the
+users DN  - less the 'user.base.dn'.  This means that the 'user.base.dn' needed to be 
+included in the 'role.filter'
+
+Introduced in JAAS Modules 2.3.0.redhat-611423 is the '%fqdn'.  This DN is fully qualified
+and simpifies the filter.
+
+Several ObjectClasses are available in LDAP to represent groups and roles.  Two commonly
+used ObjectClasses are 'group' and 'groupOfUniqueNames'.  If 'group' is used, then the
+membership attribute is 'member'.  If 'groupOfUniqueNames' is used, then that membership
+attribute is 'uniqueMember'
+
+-->
+
+  <jaas:config name="karaf" rank="100">
+    <jaas:module className="io.fabric8.jaas.ZookeeperLoginModule" flags="sufficient">
+      path = /fabric/authentication/users
+      encryption.name = ${encryption.name}
+      encryption.enabled = ${encryption.enabled}
+      encryption.prefix = ${encryption.prefix}
+      encryption.suffix = ${encryption.suffix}
+      encryption.algorithm = ${encryption.algorithm}
+      encryption.encoding = ${encryption.encoding}
+    </jaas:module>
+
+    <jaas:module className="org.apache.karaf.jaas.modules.ldap.LDAPLoginModule" flags="sufficient">
+      debug=true
+
+      <!-- LDAP Configuration -->
+      initialContextFactory=com.sun.jndi.ldap.LdapCtxFactory
+<!--  multiple LDAP servers can be specified as a comma seperated list od URLs -->
+      connection.url=ldap://10.10.178.20:389
+
+<!--  authentication=none -->
+      authentication=simple
+      connection.username=cn=Directory Manager
+      connection.password=directory
+
+      <!-- User Info -->
+      user.base.dn=dc=redhat,dc=com
+      user.filter=(&amp;(objectClass=InetOrgPerson)(uid=%u))
+      user.search.subtree=true
+
+      <!-- Role/Group Info-->
+      role.base.dn=dc=redhat,dc=com
+      role.name.attribute=cn
+<!-- 
+      The 'dc=redhat,dc=com' used in the role.filter
+      below is the user.base.dn.
+-->
+<!--      role.filter=(uniquemember=%dn,dc=redhat,dc=com) -->
+      role.filter=(&amp;(objectClass=GroupOfUniqueNames)(UniqueMember=%fqdn))
+      role.search.subtree=true
+
+<!-- role mappings - a ';' separated list -->
+      role.mapping=JBossAdmin=admin;JBossMonitor=Monitor,viewer
+
+<!-- LDAP context properties -->
+      context.com.sun.jndi.ldap.connect.timeout=5000
+      context.com.sun.jndi.ldap.read.timeout=5000
+
+<!-- LDAP connection pooling -->
+<!-- http://docs.oracle.com/javase/jndi/tutorial/ldap/connect/pool.html -->
+<!-- http://docs.oracle.com/javase/jndi/tutorial/ldap/connect/config.html -->
+
+     context.com.sun.jndi.ldap.connect.pool=true
+     context.com.sun.jndi.ldap.connect.pool.initsize=5
+     context.com.sun.jndi.ldap.connect.pool.protocol=plain ssl
+
+<!-- How are LDAP referrals handled? 
+
+     Can be `follow`, `ignore` or `throw`.  Configuring `follow` may not work on all LDAP servers, `ignore` will 
+     silently ignore all referrals, while `throw` will throw a partial results exception if there is a referral.
+-->
+     context.java.naming.referral=ignore
+
+<!-- SSL configuration -->
+     ssl=false
+     ssl.protocol=SSL
+<!-- matches the keystore/truststore configured below -->
+     ssl.truststore=ks
+     ssl.algorithm=PKIX
+    </jaas:module>
+  </jaas:config>
+
+  <!-- AdminConfig property place holder for the org.apache.karaf.jaas -->
+  <cm:property-placeholder persistent-id="org.fusesource.fabric.jaas" update-strategy="reload">
+    <cm:default-properties>
+      <cm:property name="encryption.name" value="" />
+      <cm:property name="encryption.enabled" value="true" />
+      <cm:property name="encryption.prefix" value="{CRYPT}" />
+      <cm:property name="encryption.suffix" value="{CRYPT}" />
+      <cm:property name="encryption.algorithm" value="MD5" />
+      <cm:property name="encryption.encoding" value="hexadecimal" />
+    </cm:default-properties>
+  </cm:property-placeholder>
+  
+  <!-- The Backing Engine Factory Service for the ZookeeperLoginModule -->
+  <service interface="org.apache.karaf.jaas.modules.BackingEngineFactory">
+    <bean class="io.fabric8.jaas.ZookeeperBackingEngineFactory" />
+  </service>
+
+  <!-- Location of the SSL truststore/keystore -->
+<!--  <jaas:keystore name="ks" path="file:///${karaf.home}/etc/ldap.truststore" keystorePassword=“abbcx” />-->
+
+</blueprint>
+    
