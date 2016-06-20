@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+    xmlns:camel="http://camel.apache.org/schema/blueprint"
+    xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+    xmlns:cxf="http://camel.apache.org/schema/blueprint/cxf"
+    xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
+    xmlns:prop="http://camel.apache.org/schema/placeholder"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="                        http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd                        http://camel.apache.org/schema/blueprint/cxf http://camel.apache.org/schema/blueprint/cxf/camel-cxf.xsd                          http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd         http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd  http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+    
+	<cxf:rsServer address="/restws" id="restGenericEndpoint" serviceClass="com.city.connect.ws.RestServiceGeneric">
+        <cxf:providers>
+            <bean class="com.city.connect.util.CORSFilter"/>
+        </cxf:providers>
+    </cxf:rsServer>
+    <bean class="com.city.connect.ws.impl.UtilityServiceImpl" id="utilityService"/>
+    
+    <camelContext id="blueprintContext" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
+        <route id="_route4">
+            <from id="_from5" uri="cxfrs:bean:restGenericEndpoint?bindingStyle=SimpleConsumer"/>
+            <throttle id="_throttle2" timePeriodMillis="30000">
+                <constant>3</constant>
+                <log id="_logr41" message="Header = ${header.operationName}"/>
+                <log id="_logr42" message="body = ${body}"/>
+                <choice id="_choice2">
+                    <when id="_when4">
+                        <simple>${header.operationName} == "getMaskedMessage1"</simple>
+                        <log id="_logr43" message="body = ${body}"/>
+                        <bean id="_bean9" method="getAllMaskedMessage" ref="utilityService"/>
+                    </when>
+                    <when id="_when4">
+                        <simple>${header.operationName} == "getMaskedMessage2"</simple>
+                        <log id="_logr44" message="body = ${body}"/>
+                        <bean id="_bean9" method="getAllMaskedMessage" ref="utilityService"/>
+                    </when>
+                    <when id="_when4">
+                        <simple>${header.operationName} == "getMaskedMessage3"</simple>
+                        <log id="_logr45" message="body = ${body}"/>
+                        <bean id="_bean9" method="getAllMaskedMessage" ref="utilityService"/>
+                    </when>
+                    <when id="_when4">
+                        <simple>${header.operationName} == "getMaskedMessage4"</simple>
+                        <log id="_logr46" message="body = ${body}"/>
+                        <log message="Params: ${header.operationName}  ${header.comments}...${header.maskedType}...${header.maskedTypeValue}"/>
+                        <bean id="_bean9" method="getAllMaskedMessage" ref="utilityService"/>
+                    </when>
+                    <when id="_when4">
+                        <simple>${header.operationName} == "getMaskedMessage5"</simple>
+                        <log id="_logr47" message="body = ${body}"/>
+                        <log message="Params: ${header.operationName}  ${header.comments}...${header.maskedType}...${header.maskedTypeValue}"/>
+                        <bean id="_bean9" method="getAllMaskedMessage" ref="utilityService"/>
+                    </when>
+                    <when id="_when4">
+                        <simple>${header.operationName} == "getMaskedMessage6"</simple>
+                        <log id="_logr48" message="body = ${body}"/>
+                        <bean id="_bean9" method="getAllMaskedMessage3" ref="utilityService"/>
+                    </when>
+                    <when id="_when4">
+                        <simple>${header.operationName} == "getMaskedMessage7"</simple>
+                        <log id="_logr49" message="body = ${body}"/>
+                        <bean id="_bean9" method="getAllMaskedMessage4" ref="utilityService"/>
+                    </when>
+                    <when id="_when4">
+                        <simple>${header.operationName} == "getMaskedMessage8"</simple>
+                        <log id="_logr410" message="body = ${body}"/>
+                        <bean id="_bean9" method="getAllMaskedMessage3" ref="utilityService"/>
+                    </when>
+                    <when id="_when4">
+                        <simple>${header.operationName} == "getMaskedMessage9"</simple>
+                        <log id="_logr411" message="body = ${body}"/>
+                        <bean id="_bean9" method="getAllMaskedMessage4" ref="utilityService"/>
+                    </when>
+                </choice>
+            </throttle>
+        </route>
+    </camelContext>
+</blueprint>
