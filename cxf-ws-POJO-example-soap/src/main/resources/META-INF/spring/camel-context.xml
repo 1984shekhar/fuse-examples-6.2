@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configures the Camel Context-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd">
+
+
+ <bean id="loggingOutInterceptor" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+<bean id="loggingInInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+
+<bean id="opt" class="com.mycompany.camel.AddOperation"/>
+
+<cxf:cxfEndpoint id="addEndpoint" address="/AddService" serviceClass="com.mycompany.camel.AddInterface">
+		<cxf:outInterceptors>
+            <ref bean="loggingOutInterceptor"/>
+        </cxf:outInterceptors>
+        <cxf:inInterceptors>
+            <ref bean="loggingInInterceptor"/>   
+       </cxf:inInterceptors>
+</cxf:cxfEndpoint>
+
+<bean id="testProcessor" class="com.mycompany.camel.PersonProcessor"/>
+<camelContext xmlns="http://camel.apache.org/schema/spring" trace="true">
+
+<route id="TestService1">
+			<from uri="cxf:bean:addEndpoint"/>
+    <to uri="log:input"/>
+    <log message="Starting the Service Call of annotation"/>
+    <process ref="testProcessor"/>
+    <log message="body : ${body}"/>
+    <bean ref="opt" method="addition"/>
+    <to uri="log:output"/>
+</route>
+
+</camelContext>
+</beans> 
+
