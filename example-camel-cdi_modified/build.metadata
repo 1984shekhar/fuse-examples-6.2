@@ -1,0 +1,14 @@
+# Created by buildmetadata-maven-plugin 1.7.0 ( SHA: 6f444cae ) 
+build.artifactId=example-camel-cdi-modified
+build.groupId=org.wildfly.camel
+build.java.runtime.name=Java(TM) SE Runtime Environment
+build.java.runtime.version=pxa6470_27sr3fp30-20160112_01 (SR3 FP30)
+build.java.vendor=IBM Corporation
+build.java.vm=IBM J9 VM
+build.maven.execution.cmdline=-B -Dmaven.test.skip\=true -DskipTests clean install
+build.maven.version=3.2.1
+build.scmRevision.date=26.07.2016
+build.scmRevision.id=4ae5a89aa47cdfe7ae8c97b35f9b78ad2b017ab0
+build.scmRevision.url=scm\:git\:git\://github.com/jboss-fuse/wildfly-camel.git/wildfly-camel-example/example-camel-cdi-modified
+build.version=2.3.0.redhat-621084
+build.version.full=2.3.0.redhat-621084r4ae5a89aa47cdfe7ae8c97b35f9b78ad2b017ab0

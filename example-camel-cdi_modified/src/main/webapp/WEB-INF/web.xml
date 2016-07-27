@@ -1,0 +1,8 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+    <!--
+<context-param>
+    <param-name>CamelContextLifecycle</param-name>
+    <param-value>org.wildfly.camel.examples.cdi.MyCamelLifeCycle</param-value>
+</context-param>
+    -->
+</web-app>
