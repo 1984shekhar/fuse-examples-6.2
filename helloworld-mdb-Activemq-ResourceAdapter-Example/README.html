@@ -1,0 +1,203 @@
+<html><head><title>README</title><link href="https://raw.github.com/pmuir/github-flavored-markdown/gh-pages/shared/css/documentation.css" rel="stylesheet"></link><link href="https://raw.github.com/github/github-flavored-markdown/gh-pages/shared/css/pygments.css" rel="stylesheet"></link></head><body><h1 id="toc_0">helloworld-mdb: Helloword Using an MDB (Message-Driven Bean)</h1>
+
+<p>Author: Serge Pagop, Andy Taylor, Jeff Mesnil<br/>
+Level: Intermediate<br/>
+Technologies: JMS, EJB, MDB<br/>
+Summary: Demonstrates the use of JMS 1.1 and EJB 3.1 Message-Driven Bean<br/>
+Target Product: EAP</p>
+
+<h2 id="toc_1">What is it?</h2>
+
+<p>This example demonstrates the use of <em>JMS 1.1</em> and <em>EJB 3.1 Message-Driven Bean</em> in JBoss Enterprise Application Platform 6 or JBoss AS 7.1.0.</p>
+
+<p>This project creates two JMS resources:</p>
+
+<ul>
+<li>A queue named <code>HELLOWORLDMDBQueue</code> bound in JNDI as <code>java:/queue/HELLOWORLDMDBQueue</code></li>
+<li>A topic named <code>HELLOWORLDMDBTopic</code> bound in JNDI as <code>java:/topic/HELLOWORLDMDBTopic</code></li>
+</ul>
+
+<h2 id="toc_2">System requirements</h2>
+
+<p>All you need to build this project is Java 6.0 (Java SDK 1.6) or better, Maven 3.0 or better.</p>
+
+<p>The application this project produces is designed to be run on JBoss Enterprise Application Platform 6 or JBoss AS 7. </p>
+
+<h2 id="toc_3">Configure Maven</h2>
+
+<p>If you have not yet done so, you must <a href="../README.html#mavenconfiguration">Configure Maven</a> before testing the quickstarts.</p>
+
+<h2 id="toc_4">Start JBoss Enterprise Application Platform 6 or JBoss AS 7 with the Full Profile</h2>
+
+<ol>
+<li>Open a command line and navigate to the root of the JBoss server directory.</li>
+<li><p>The following shows the command line to start the server with the full profile:</p>
+<div class="highlight"><pre><span class="n">For</span> <span class="n">Linux</span><span class="p">:</span>   <span class="n">JBOSS_HOME</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">standalone</span><span class="p">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">c</span> <span class="n">standalone</span><span class="o">-</span><span class="n">full</span><span class="p">.</span><span class="n">xml</span>
+<span class="n">For</span> <span class="n">Windows</span><span class="p">:</span> <span class="n">JBOSS_HOME</span><span class="o">\</span><span class="n">bin</span><span class="o">\</span><span class="n">standalone</span><span class="p">.</span><span class="n">bat</span> <span class="o">-</span><span class="n">c</span> <span class="n">standalone</span><span class="o">-</span><span class="n">full</span><span class="p">.</span><span class="n">xml</span>
+</pre>
+</div></li>
+</ol>
+
+<h2 id="toc_5">Build and Deploy the Quickstart</h2>
+
+<p><em>NOTE: The following build command assumes you have configured your Maven user settings. If you have not, you must include Maven setting arguments on the command line. See <a href="../README.html#buildanddeploy">Build and Deploy the Quickstarts</a> for complete instructions and additional options.</em></p>
+
+<ol>
+<li>Make sure you have started the JBoss Server as described above.</li>
+<li>Open a command line and navigate to the root directory of this quickstart.</li>
+<li><p>Type this command to build and deploy the archive:</p>
+<div class="highlight"><pre><span class="n">mvn</span> <span class="n">clean</span> <span class="n">package</span> <span class="n">jboss</span><span class="o">-</span><span class="n">as</span><span class="p">:</span><span class="n">deploy</span>
+</pre>
+</div></li>
+<li><p>This will deploy <code>target/jboss-as-helloworld-mdb.war</code> to the running instance of the server. Look at the JBoss Application Server console or Server log and you should see log messages corresponding to the deployment of the message-driven beans and the JMS destinations:</p>
+<div class="highlight"><pre><span class="mi">14</span><span class="o">:</span><span class="mi">11</span><span class="o">:</span><span class="mi">01</span><span class="o">,</span><span class="mi">020</span> <span class="n">INFO</span> <span class="n">org</span><span class="o">.</span><span class="na">hornetq</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">server</span><span class="o">.</span><span class="na">impl</span><span class="o">.</span><span class="na">HornetQServerImpl</span> <span class="n">trying</span> <span class="n">to</span> <span class="n">deploy</span> <span class="n">queue</span> <span class="n">jms</span><span class="o">.</span><span class="na">queue</span><span class="o">.</span><span class="na">HELLOWORLDMDBQueue</span>
+<span class="mi">14</span><span class="o">:</span><span class="mi">11</span><span class="o">:</span><span class="mi">01</span><span class="o">,</span><span class="mi">029</span> <span class="n">INFO</span> <span class="n">org</span><span class="o">.</span><span class="na">jboss</span><span class="o">.</span><span class="na">as</span><span class="o">.</span><span class="na">messaging</span> <span class="n">JBAS011601</span><span class="o">:</span> <span class="n">Bound</span> <span class="n">messaging</span> <span class="n">object</span> <span class="n">to</span> <span class="n">jndi</span> <span class="n">name</span> <span class="n">java</span><span class="o">:/</span><span class="n">queue</span><span class="o">/</span><span class="n">HELLOWORLDMDBQueue</span>
+<span class="mi">14</span><span class="o">:</span><span class="mi">11</span><span class="o">:</span><span class="mi">01</span><span class="o">,</span><span class="mi">030</span> <span class="n">INFO</span> <span class="n">org</span><span class="o">.</span><span class="na">hornetq</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">server</span><span class="o">.</span><span class="na">impl</span><span class="o">.</span><span class="na">HornetQServerImpl</span> <span class="n">trying</span> <span class="n">to</span> <span class="n">deploy</span> <span class="n">queue</span> <span class="n">jms</span><span class="o">.</span><span class="na">topic</span><span class="o">.</span><span class="na">HELLOWORLDMDBTopic</span>
+<span class="mi">14</span><span class="o">:</span><span class="mi">11</span><span class="o">:</span><span class="mi">01</span><span class="o">,</span><span class="mi">060</span> <span class="n">INFO</span> <span class="n">org</span><span class="o">.</span><span class="na">jboss</span><span class="o">.</span><span class="na">as</span><span class="o">.</span><span class="na">ejb3</span> <span class="n">JBAS014142</span><span class="o">:</span> <span class="n">Started</span> <span class="n">message</span> <span class="n">driven</span> <span class="n">bean</span> <span class="s1">&#39;HelloWorldQueueMDB&#39;</span> <span class="k">with</span> <span class="s1">&#39;hornetq-ra&#39;</span> <span class="n">resource</span> <span class="n">adapter</span>
+<span class="mi">14</span><span class="o">:</span><span class="mi">11</span><span class="o">:</span><span class="mi">01</span><span class="o">,</span><span class="mi">060</span> <span class="n">INFO</span> <span class="n">org</span><span class="o">.</span><span class="na">jboss</span><span class="o">.</span><span class="na">as</span><span class="o">.</span><span class="na">ejb3</span> <span class="n">JBAS014142</span><span class="o">:</span> <span class="n">Started</span> <span class="n">message</span> <span class="n">driven</span> <span class="n">bean</span> <span class="s1">&#39;HelloWorldQTopicMDB&#39;</span> <span class="k">with</span> <span class="s1">&#39;hornetq-ra&#39;</span> <span class="n">resource</span> <span class="n">adapter</span>
+<span class="mi">14</span><span class="o">:</span><span class="mi">11</span><span class="o">:</span><span class="mi">01</span><span class="o">,</span><span class="mi">070</span> <span class="n">INFO</span> <span class="n">org</span><span class="o">.</span><span class="na">jboss</span><span class="o">.</span><span class="na">as</span><span class="o">.</span><span class="na">messaging</span> <span class="n">JBAS011601</span><span class="o">:</span> <span class="n">Bound</span> <span class="n">messaging</span> <span class="n">object</span> <span class="n">to</span> <span class="n">jndi</span> <span class="n">name</span> <span class="n">java</span><span class="o">:/</span><span class="n">topic</span><span class="o">/</span><span class="n">HELLOWORLDMDBTopic</span>
+</pre>
+</div></li>
+</ol>
+
+<h2 id="toc_6">Access the application </h2>
+
+<p>The application will be running at the following URL: <a href="http://localhost:8080/jboss-as-helloworld-mdb/">http://localhost:8080/jboss-as-helloworld-mdb/</a> and will send some messages to the queue.</p>
+
+<p>To send messages to the topic, use the following URL: <a href="http://localhost:8080/jboss-as-helloworld-mdb/HelloWorldMDBServletClient?topic">http://localhost:8080/jboss-as-helloworld-mdb/HelloWorldMDBServletClient?topic</a></p>
+
+<h2 id="toc_7">Investigate the Server Console Output</h2>
+
+<p>Look at the JBoss Application Server console or Server log and you should see log messages like the following:</p>
+<div class="highlight"><pre><span class="mi">17</span><span class="o">:</span><span class="mi">51</span><span class="o">:</span><span class="mi">52</span><span class="o">,</span><span class="mi">122</span> <span class="n">INFO</span>  <span class="o">[</span><span class="kd">class</span> <span class="n">org</span><span class="o">.</span><span class="na">jboss</span><span class="o">.</span><span class="na">as</span><span class="o">.</span><span class="na">quickstarts</span><span class="o">.</span><span class="na">mdb</span><span class="o">.</span><span class="na">HelloWorldQueueMDB</span><span class="o">]</span> <span class="o">(</span><span class="n">Thread</span><span class="o">-</span><span class="mi">1</span> <span class="o">(</span><span class="n">HornetQ</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="n">global</span><span class="o">-</span><span class="n">threads</span><span class="o">-</span><span class="mi">26912020</span><span class="o">))</span> <span class="n">Received</span> <span class="n">Message</span> <span class="n">from</span> <span class="n">queue</span><span class="o">:</span> <span class="n">This</span> <span class="k">is</span> <span class="n">message</span> <span class="mi">1</span>
+<span class="mi">17</span><span class="o">:</span><span class="mi">51</span><span class="o">:</span><span class="mi">52</span><span class="o">,</span><span class="mi">123</span> <span class="n">INFO</span>  <span class="o">[</span><span class="kd">class</span> <span class="n">org</span><span class="o">.</span><span class="na">jboss</span><span class="o">.</span><span class="na">as</span><span class="o">.</span><span class="na">quickstarts</span><span class="o">.</span><span class="na">mdb</span><span class="o">.</span><span class="na">HelloWorldQueueMDB</span><span class="o">]</span> <span class="o">(</span><span class="n">Thread</span><span class="o">-</span><span class="mi">11</span> <span class="o">(</span><span class="n">HornetQ</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="n">global</span><span class="o">-</span><span class="n">threads</span><span class="o">-</span><span class="mi">26912020</span><span class="o">))</span> <span class="n">Received</span> <span class="n">Message</span> <span class="n">from</span> <span class="n">queue</span><span class="o">:</span> <span class="n">This</span> <span class="k">is</span> <span class="n">message</span> <span class="mi">2</span>
+<span class="mi">17</span><span class="o">:</span><span class="mi">51</span><span class="o">:</span><span class="mi">52</span><span class="o">,</span><span class="mi">124</span> <span class="n">INFO</span>  <span class="o">[</span><span class="kd">class</span> <span class="n">org</span><span class="o">.</span><span class="na">jboss</span><span class="o">.</span><span class="na">as</span><span class="o">.</span><span class="na">quickstarts</span><span class="o">.</span><span class="na">mdb</span><span class="o">.</span><span class="na">HelloWorldQueueMDB</span><span class="o">]</span> <span class="o">(</span><span class="n">Thread</span><span class="o">-</span><span class="mi">12</span> <span class="o">(</span><span class="n">HornetQ</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="n">global</span><span class="o">-</span><span class="n">threads</span><span class="o">-</span><span class="mi">26912020</span><span class="o">))</span> <span class="n">Received</span> <span class="n">Message</span> <span class="n">from</span> <span class="n">queue</span><span class="o">:</span> <span class="n">This</span> <span class="k">is</span> <span class="n">message</span> <span class="mi">5</span>
+<span class="mi">17</span><span class="o">:</span><span class="mi">51</span><span class="o">:</span><span class="mi">52</span><span class="o">,</span><span class="mi">135</span> <span class="n">INFO</span>  <span class="o">[</span><span class="kd">class</span> <span class="n">org</span><span class="o">.</span><span class="na">jboss</span><span class="o">.</span><span class="na">as</span><span class="o">.</span><span class="na">quickstarts</span><span class="o">.</span><span class="na">mdb</span><span class="o">.</span><span class="na">HelloWorldQueueMDB</span><span class="o">]</span> <span class="o">(</span><span class="n">Thread</span><span class="o">-</span><span class="mi">13</span> <span class="o">(</span><span class="n">HornetQ</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="n">global</span><span class="o">-</span><span class="n">threads</span><span class="o">-</span><span class="mi">26912020</span><span class="o">))</span> <span class="n">Received</span> <span class="n">Message</span> <span class="n">from</span> <span class="n">queue</span><span class="o">:</span> <span class="n">This</span> <span class="k">is</span> <span class="n">message</span> <span class="mi">4</span>
+<span class="mi">17</span><span class="o">:</span><span class="mi">51</span><span class="o">:</span><span class="mi">52</span><span class="o">,</span><span class="mi">136</span> <span class="n">INFO</span>  <span class="o">[</span><span class="kd">class</span> <span class="n">org</span><span class="o">.</span><span class="na">jboss</span><span class="o">.</span><span class="na">as</span><span class="o">.</span><span class="na">quickstarts</span><span class="o">.</span><span class="na">mdb</span><span class="o">.</span><span class="na">HelloWorldQueueMDB</span><span class="o">]</span> <span class="o">(</span><span class="n">Thread</span><span class="o">-</span><span class="mi">14</span> <span class="o">(</span><span class="n">HornetQ</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="n">global</span><span class="o">-</span><span class="n">threads</span><span class="o">-</span><span class="mi">26912020</span><span class="o">))</span> <span class="n">Received</span> <span class="n">Message</span> <span class="n">from</span> <span class="n">queue</span><span class="o">:</span> <span class="n">This</span> <span class="k">is</span> <span class="n">message</span> <span class="mi">3</span>
+</pre>
+</div>
+
+<h2 id="toc_8">Undeploy the Archive</h2>
+
+<ol>
+<li>Make sure you have started the JBoss Server as described above.</li>
+<li>Open a command line and navigate to the root directory of this quickstart.</li>
+<li><p>When you are finished testing, type this command to undeploy the archive:</p>
+<div class="highlight"><pre><span class="n">mvn</span> <span class="n">jboss</span><span class="o">-</span><span class="n">as</span><span class="p">:</span><span class="n">undeploy</span>
+</pre>
+</div></li>
+</ol>
+
+<h2 id="toc_9">Run the Quickstart in JBoss Developer Studio or Eclipse</h2>
+
+<p>You can also start the server and deploy the quickstarts from Eclipse using JBoss tools. For more information, see <a href="../README.html#useeclipse">Use JBoss Developer Studio or Eclipse to Run the Quickstarts</a> </p>
+
+<h2 id="toc_10">Debug the Application</h2>
+
+<p>If you want to debug the source code or look at the Javadocs of any library in the project, run either of the following commands to pull them into your local repository. The IDE should then detect them.</p>
+<div class="highlight"><pre><span class="n">mvn</span> <span class="n">dependency</span><span class="p">:</span><span class="n">sources</span>
+<span class="n">mvn</span> <span class="n">dependency</span><span class="p">:</span><span class="n">resolve</span> <span class="o">-</span><span class="n">Dclassifier</span><span class="p">=</span><span class="n">javadoc</span>
+</pre>
+</div>
+
+<h2 id="toc_11">Build and Deploy the Quickstart - to OpenShift</h2>
+
+<h3 id="toc_12">Create an OpenShift Account and Domain</h3>
+
+<p>If you do not yet have an OpenShift account and domain, <a href="https://openshift.redhat.com/app/login">Sign in to OpenShift</a> to create the account and domain. <a href="https://openshift.redhat.com/app/getting_started">Get Started with OpenShift</a> will show you how to install the OpenShift Express command line interface.</p>
+
+<h3 id="toc_13">Create the OpenShift Application</h3>
+
+<p>Open a shell command prompt and change to a directory of your choice. Enter the following command, replacing APPLICATION_TYPE with <code>jbosseap-6.0</code> for quickstarts running on JBoss Enterprise Application Platform 6, or <code>jbossas-7</code> for quickstarts running on JBoss AS 7:</p>
+<div class="highlight"><pre><span class="n">rhc</span> <span class="n">app</span> <span class="n">create</span> <span class="o">-</span><span class="n">a</span> <span class="n">hellworldmdb</span> <span class="o">-</span><span class="n">t</span> <span class="n">APPLICATION_TYPE</span>
+</pre>
+</div>
+
+<p>The domain name for this application will be <code>helloworldmdb-YOUR_DOMAIN_NAME.rhcloud.com</code>. Here we use the <em>quickstart</em> domain. You will need to replace it with your own OpenShift domain name.</p>
+
+<p>This command creates an OpenShift application called <code>helloworldmdb</code> and will run the application inside the <code>jbosseap-6.0</code>  or <code>jbossas-7</code> container. You should see some output similar to the following:</p>
+<div class="highlight"><pre><span class="n">Creating</span> <span class="n">application</span><span class="p">:</span> <span class="n">helloworldmdb</span>
+<span class="n">Now</span> <span class="n">your</span> <span class="n">new</span> <span class="n">domain</span> <span class="n">name</span> <span class="n">is</span> <span class="n">being</span> <span class="n">propagated</span> <span class="n">worldwide</span> <span class="p">(</span><span class="n">this</span> <span class="n">might</span> <span class="n">take</span> <span class="n">a</span> <span class="n">minute</span><span class="p">)...</span>
+<span class="n">Warning</span><span class="p">:</span> <span class="n">Permanently</span> <span class="n">added</span> <span class="s">&#39;helloworldmdb-quickstart.rhcloud.com,107.22.36.32&#39;</span> <span class="p">(</span><span class="n">RSA</span><span class="p">)</span> <span class="n">to</span> <span class="n">the</span> <span class="n">list</span> <span class="n">of</span> <span class="n">known</span> <span class="n">hosts</span><span class="p">.</span>
+<span class="n">Confirming</span> <span class="n">application</span> <span class="s">&#39;helloworldmdb&#39;</span> <span class="n">is</span> <span class="n">available</span><span class="p">:</span>  <span class="n">Success</span>!
+
+<span class="n">helloworldmdb</span> <span class="n">published</span><span class="p">:</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">helloworldmdb</span><span class="o">-</span><span class="n">quickstart</span><span class="p">.</span><span class="n">rhcloud</span><span class="p">.</span><span class="n">com</span><span class="o">/</span>
+<span class="n">git</span> <span class="n">url</span><span class="p">:</span>  <span class="n">ssh</span><span class="p">:</span><span class="o">//</span><span class="n">b92047bdc05e46c980cc3501c3577c1e</span><span class="p">@</span><span class="n">helloworldmdb</span><span class="o">-</span><span class="n">quickstart</span><span class="p">.</span><span class="n">rhcloud</span><span class="p">.</span><span class="n">com</span><span class="o">/~/</span><span class="n">git</span><span class="o">/</span><span class="n">helloworldmdb</span><span class="p">.</span><span class="n">git</span><span class="o">/</span>
+<span class="n">Successfully</span> <span class="n">created</span> <span class="n">application</span><span class="p">:</span> <span class="n">helloworldmdb</span>
+</pre>
+</div>
+
+<p>The create command creates a git repository in the current directory with the same name as the application. Notice that the output also reports the URL at which the application can be accessed. Make sure it is available by typing the published url <a href="http://helloworldmdb-quickstart.rhcloud.com/">http://helloworldmdb-quickstart.rhcloud.com/</a> into a browser or use command line tools such as curl or wget. Be sure to replace the <code>quickstart</code> in the URL with your domain name.</p>
+
+<h3 id="toc_14">Migrate the Quickstart Source</h3>
+
+<p>Now that you have confirmed it is working you can migrate the quickstart source. You do not need the generated default application, so navigate to the new git repository directory and tell git to remove the source and pom files:</p>
+<div class="highlight"><pre><span class="n">cd</span> <span class="n">helloworldmdb</span>
+<span class="n">git</span> <span class="n">rm</span> <span class="o">-</span><span class="n">r</span> <span class="n">src</span> <span class="n">pom</span><span class="p">.</span><span class="n">xml</span>
+</pre>
+</div>
+
+<p>Copy the source for the <code>helloworld-mdb</code> quickstart into this new git repository:</p>
+<div class="highlight"><pre><span class="n">cp</span> <span class="o">-</span><span class="n">r</span> <span class="n">QUICKSTART_HOME</span><span class="o">/</span><span class="n">helloworld</span><span class="o">-</span><span class="n">mdb</span><span class="o">/</span><span class="n">src</span> <span class="p">.</span>
+<span class="n">cp</span> <span class="n">QUICKSTART_HOME</span><span class="o">/</span><span class="n">helloworld</span><span class="o">-</span><span class="n">mdb</span><span class="o">/</span><span class="n">pom</span><span class="p">.</span><span class="n">xml</span> <span class="p">.</span>
+</pre>
+</div>
+
+<h3 id="toc_15">Configure the OpenShift Server</h3>
+
+<p>HornetQ is enabled by default in <code>.openshift/config/standalone.xml</code>. There is nothing to do to be able to send and receive messages from OpenShift.</p>
+
+<h3 id="toc_16">Deploy the OpenShift Application</h3>
+
+<p>You can now deploy the changes to your OpenShift application using git as follows:</p>
+<div class="highlight"><pre><span class="n">git</span> <span class="n">add</span> <span class="n">src</span> <span class="n">pom</span><span class="p">.</span><span class="n">xml</span> <span class="p">.</span><span class="n">openshift</span>
+<span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> &quot;<span class="n">helloworld</span><span class="o">-</span><span class="n">mdb</span> <span class="n">quickstart</span> <span class="n">on</span> <span class="n">OpenShift</span>&quot;
+<span class="n">git</span> <span class="n">push</span>
+</pre>
+</div>
+
+<p>The final push command triggers the OpenShift infrastructure to build and deploy the changes. </p>
+
+<p>Note that the <code>openshift</code> profile in the <code>pom.xml</code> file is activated by OpenShift. This causes the WAR built by OpenShift to be copied to the <code>deployments</code> directory and deployed without a context path.</p>
+
+<h3 id="toc_17">Test the OpenShift Application</h3>
+
+<p>When the push command returns you can test the application by getting the following URL either via a browser or using tools such as curl or wget. Be sure to replace the <code>quickstart</code> in the URL with your domain name.</p>
+
+<ul>
+<li><a href="http://helloworldmdb-quickstart.rhcloud.com/">http://helloworldmdb-quickstart.rhcloud.com/</a> to send messages to the queue</li>
+<li><a href="http://helloworldmdb-quickstart.rhcloud.com/HelloWorldMDBServletClient?topic">http://helloworldmdb-quickstart.rhcloud.com/HelloWorldMDBServletClient?topic</a> to send messages to the topic</li>
+</ul>
+
+<p>If the application has run succesfully you should see some output in the browser.</p>
+
+<p>Now you can look at the output of the server by running the following command:</p>
+<div class="highlight"><pre><span class="n">rhc</span> <span class="n">app</span> <span class="n">status</span> <span class="o">-</span><span class="n">a</span> <span class="n">helloworldmdb</span>
+</pre>
+</div>
+
+<p>This will show the tail of the servers log which should show something like the following.</p>
+<div class="highlight"><pre>2012<span class="o">/</span>03<span class="o">/</span>02 05<span class="p">:</span>52<span class="p">:</span>33<span class="p">,</span>065 <span class="n">INFO</span>  <span class="p">[</span><span class="n">class</span> <span class="n">org</span><span class="p">.</span><span class="n">jboss</span><span class="p">.</span><span class="n">as</span><span class="p">.</span><span class="n">quickstarts</span><span class="p">.</span><span class="n">mdb</span><span class="p">.</span><span class="n">HelloWorldMDB</span><span class="p">]</span> <span class="p">(</span><span class="n">Thread</span><span class="o">-</span>0 <span class="p">(</span><span class="n">HornetQ</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="k">global</span><span class="o">-</span><span class="n">threads</span><span class="o">-</span>1772719<span class="p">))</span> <span class="n">Received</span> <span class="n">Message</span> <span class="n">from</span> <span class="n">queue</span><span class="p">:</span> <span class="n">This</span> <span class="n">is</span> <span class="n">message</span> 4
+2012<span class="o">/</span>03<span class="o">/</span>02 05<span class="p">:</span>52<span class="p">:</span>33<span class="p">,</span>065 <span class="n">INFO</span>  <span class="p">[</span><span class="n">class</span> <span class="n">org</span><span class="p">.</span><span class="n">jboss</span><span class="p">.</span><span class="n">as</span><span class="p">.</span><span class="n">quickstarts</span><span class="p">.</span><span class="n">mdb</span><span class="p">.</span><span class="n">HelloWorldMDB</span><span class="p">]</span> <span class="p">(</span><span class="n">Thread</span><span class="o">-</span>1 <span class="p">(</span><span class="n">HornetQ</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="k">global</span><span class="o">-</span><span class="n">threads</span><span class="o">-</span>1772719<span class="p">))</span> <span class="n">Received</span> <span class="n">Message</span> <span class="n">from</span> <span class="n">queue</span><span class="p">:</span> <span class="n">This</span> <span class="n">is</span> <span class="n">message</span> 1
+2012<span class="o">/</span>03<span class="o">/</span>02 05<span class="p">:</span>52<span class="p">:</span>33<span class="p">,</span>067 <span class="n">INFO</span>  <span class="p">[</span><span class="n">class</span> <span class="n">org</span><span class="p">.</span><span class="n">jboss</span><span class="p">.</span><span class="n">as</span><span class="p">.</span><span class="n">quickstarts</span><span class="p">.</span><span class="n">mdb</span><span class="p">.</span><span class="n">HelloWorldMDB</span><span class="p">]</span> <span class="p">(</span><span class="n">Thread</span><span class="o">-</span>6 <span class="p">(</span><span class="n">HornetQ</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="k">global</span><span class="o">-</span><span class="n">threads</span><span class="o">-</span>1772719<span class="p">))</span> <span class="n">Received</span> <span class="n">Message</span> <span class="n">from</span> <span class="n">queue</span><span class="p">:</span> <span class="n">This</span> <span class="n">is</span> <span class="n">message</span> 5
+2012<span class="o">/</span>03<span class="o">/</span>02 05<span class="p">:</span>52<span class="p">:</span>33<span class="p">,</span>065 <span class="n">INFO</span>  <span class="p">[</span><span class="n">class</span> <span class="n">org</span><span class="p">.</span><span class="n">jboss</span><span class="p">.</span><span class="n">as</span><span class="p">.</span><span class="n">quickstarts</span><span class="p">.</span><span class="n">mdb</span><span class="p">.</span><span class="n">HelloWorldMDB</span><span class="p">]</span> <span class="p">(</span><span class="n">Thread</span><span class="o">-</span>3 <span class="p">(</span><span class="n">HornetQ</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="k">global</span><span class="o">-</span><span class="n">threads</span><span class="o">-</span>1772719<span class="p">))</span> <span class="n">Received</span> <span class="n">Message</span> <span class="n">from</span> <span class="n">queue</span><span class="p">:</span> <span class="n">This</span> <span class="n">is</span> <span class="n">message</span> 3
+2012<span class="o">/</span>03<span class="o">/</span>02 05<span class="p">:</span>52<span class="p">:</span>33<span class="p">,</span>065 <span class="n">INFO</span>  <span class="p">[</span><span class="n">class</span> <span class="n">org</span><span class="p">.</span><span class="n">jboss</span><span class="p">.</span><span class="n">as</span><span class="p">.</span><span class="n">quickstarts</span><span class="p">.</span><span class="n">mdb</span><span class="p">.</span><span class="n">HelloWorldMDB</span><span class="p">]</span> <span class="p">(</span><span class="n">Thread</span><span class="o">-</span>2 <span class="p">(</span><span class="n">HornetQ</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="k">global</span><span class="o">-</span><span class="n">threads</span><span class="o">-</span>1772719<span class="p">))</span> <span class="n">Received</span> <span class="n">Message</span> <span class="n">from</span> <span class="n">queue</span><span class="p">:</span> <span class="n">This</span> <span class="n">is</span> <span class="n">message</span> 2
+</pre>
+</div>
+
+<p>You can use the OpenShift command line tools or the OpenShift web console to discover and control the application.</p>
+
+<h3 id="toc_18">Destroy the OpenShift Application</h3>
+
+<p>When you are finished with the application you can destroy it as follows:</p>
+<div class="highlight"><pre>    <span class="n">rhc</span> <span class="n">app</span> <span class="n">destroy</span> <span class="o">-</span><span class="n">a</span> <span class="n">helloworldmdb</span>
+</pre>
+</div>
+
+<p><em>Note</em>: There is a limit to the number of applications you can deploy concurrently to OpenShift. If the <code>rhc app create</code> command returns an error indicating you have reached that limit, you must destroy an existing application before you continue. </p>
+
+<ul>
+<li>To view the list of your OpenShift applications, type: <code>rhc domain show</code></li>
+<li>To destroy an application, type the following, substituting the application name you want to destroy: <code>rhc app destroy -a APPLICATION_NAME_TO_DESTROY</code></li>
+</ul>
+</body></html>
