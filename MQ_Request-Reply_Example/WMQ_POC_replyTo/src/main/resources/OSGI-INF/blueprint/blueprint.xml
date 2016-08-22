@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cxf="http://camel.apache.org/schema/blueprint/cxf"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
+        http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+        http://camel.apache.org/schema/blueprint/cxf http://camel.apache.org/schema/blueprint/cxf/camel-cxf.xsd">
+
+ <cxf:cxfEndpoint id="WMQEndpoint"
+		address="jms:queue:QUEUE1?jndiConnectionFactoryName=wmqConnectionFactory&amp;replyToName=TEST.FOO&amp;ReceiveTimeout=30000"
+		serviceClass="com.mycompany.WMQ_POC.PersonService" loggingFeatureEnabled="true">
+		<cxf:properties>
+			<entry key="dataFormat" value="MESSAGE" />
+		</cxf:properties>
+	</cxf:cxfEndpoint>	
+
+	<camelContext xmlns="http://camel.apache.org/schema/blueprint">
+	<route id="route_1">
+			<from uri="file:/home/cpandey/NotBackedUp/Downloads/quart2Poll/" />
+			<log message="SENDING MESSAGE" />
+			<removeHeaders pattern="accept-encoding"/>
+					 <removeHeaders pattern="User-Agent"/>
+					 <removeHeaders pattern="JMS*"/>
+			<inOut uri="cxf:bean:WMQEndpoint?synchronous=true"/>
+			<log message=" Received the WMQ Request , ${body}" loggingLevel="INFO" />
+			<log message=" Incoming Header values, ${headers}" loggingLevel="INFO" />
+		</route>
+			<route id="route_2">
+		<from uri="cxf:bean:WMQEndpoint" />
+		<removeHeaders pattern="JMS*"/>
+		<log message="Receving MESSAGE ... ${body}" />
+		<setBody><constant>HELLO ALL, RECEIVED</constant></setBody>
+		</route>
+	
+
+	<!-- 	<route id="timer" startupOrder="1">
+			<from uri="timer://foo?fixedRate=true&amp;period=1000" />
+			<setBody>
+				<constant>Hello World.</constant>
+			</setBody>
+			<log message="SENDING MESSAGE" />
+			<to uri="wmqxa:queue:QUEUE1" />
+			<log message="SENT MESSAGE" />
+		</route>
+		<route id="ConsumerWMQAddressInput" autoStartup="true" startupOrder="2">
+			<from uri="wmqxa:queue:QUEUE1?replyTo=TEST.FOO" />
+			<log message=" Received the WMQ Request , ${body}" loggingLevel="INFO" />
+			<log message=" Incoming Header values, ${headers}" loggingLevel="INFO" />
+			</route> -->
+	</camelContext>
+	<bean id="wmqConnectionFactory" class="com.ibm.mq.jms.MQConnectionFactory">
+		<property name="hostName" value="lab-webspheremq-1.gsslab.rdu2.redhat.com" />
+		<property name="port" value="1414" />
+		<property name="queueManager" value="QMA" />
+		<property name="channel" value="SYSTEM.DEF.SVRCONN" />
+		<property name="transportType" value="1" />
+		<property name="shareConvAllowed" value="0" />
+	</bean>
+
+	<bean id="wmqxa" class="org.apache.camel.component.jms.JmsComponent">
+		<property name="connectionFactory" ref="wmqConnectionFactory" />
+		<property name="maxConcurrentConsumers" value="5" />
+		<property name="cacheLevelName" value="CACHE_NONE" />
+	</bean>
+
+</blueprint>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cxf="http://camel.apache.org/schema/blueprint/cxf"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0
+        http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+        http://camel.apache.org/schema/blueprint/cxf http://camel.apache.org/schema/blueprint/cxf/camel-cxf.xsd">
+
+ <cxf:cxfEndpoint id="activemqEndpoint"
+		address="jms:queue:QUEUE1?replyToName=TEST.FOO&amp;ReceiveTimeout=30000"
+		serviceClass="com.mycompany.activemq.poc.replyTo.PersonService" loggingFeatureEnabled="true">
+		<cxf:properties>
+			<entry key="dataFormat" value="MESSAGE" />
+		</cxf:properties>
+	</cxf:cxfEndpoint>	
+
+	<camelContext xmlns="http://camel.apache.org/schema/blueprint">
+	<route id="timer" startupOrder="1">
+			<from uri="file:/home/cpandey/NotBackedUp/Downloads/quart2Poll/" />
+			<log message="SENDING MESSAGE" />
+			<inOut uri="cxf:bean:activemqEndpoint?synchronous=true" />
+			<log message=" Received the WMQ Request , ${body}" loggingLevel="INFO" />
+			<log message=" Incoming Header values, ${headers}" loggingLevel="INFO" />
+		</route>
+			<route id="timer2" startupOrder="2" trace="true">
+		<from uri="cxf:bean:activemqEndpoint" />
+		<log message="Receving MESSAGE ... ${body}" />
+		<setBody><constant>HELLO ALL, RECEIVED</constant></setBody>
+		</route>
+
+	<!-- 	<route id="timer" startupOrder="1">
+			<from uri="timer://foo?fixedRate=true&amp;period=1000" />
+			<setBody>
+				<constant>Hello World.</constant>
+			</setBody>
+			<log message="SENDING MESSAGE" />
+			<to uri="wmqxa:queue:QUEUE1" />
+			<log message="SENT MESSAGE" />
+		</route>
+		<route id="ConsumerWMQAddressInput" autoStartup="true" startupOrder="2">
+			<from uri="wmqxa:queue:QUEUE1?replyTo=TEST.FOO" />
+			<log message=" Received the WMQ Request , ${body}" loggingLevel="INFO" />
+			<log message=" Incoming Header values, ${headers}" loggingLevel="INFO" />
+			</route> -->
+	</camelContext>
+<bean id="ConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="tcp://localhost:61616" />
+		<property name="userName" value="admin" />
+		<property name="password" value="admin" />
+	</bean>
+
+	<bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory"
+		init-method="start" destroy-method="stop">
+		<property name="maxConnections" value="8" />
+		<property name="connectionFactory" ref="ConnectionFactory" />
+	</bean>
+
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="pooledConnectionFactory" />
+		<property name="concurrentConsumers" value="10" />
+	</bean>
+
+	<bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+		<property name="configuration" ref="jmsConfig" />
+
+	</bean>
+
+</blueprint>
