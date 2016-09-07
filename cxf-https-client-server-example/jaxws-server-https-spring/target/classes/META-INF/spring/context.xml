@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:jaxws="http://cxf.apache.org/jaxws"
+  xmlns:sec="http://cxf.apache.org/configuration/security"
+  xmlns:http="http://cxf.apache.org/transports/http/configuration"
+  xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration"
+  xsi:schemaLocation="
+            http://cxf.apache.org/jaxws 
+            http://cxf.apache.org/schemas/jaxws.xsd
+            http://cxf.apache.org/configuration/security  		      
+            http://cxf.apache.org/schemas/configuration/security.xsd
+            http://cxf.apache.org/transports/http/configuration
+            http://cxf.apache.org/schemas/configuration/http-conf.xsd
+            http://cxf.apache.org/transports/http-jetty/configuration
+            http://cxf.apache.org/schemas/configuration/http-jetty.xsd
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd">
+  <!--import resource="classpath:META-INF/cxf/cxf.xml" /-->
+
+  <httpj:engine-factory>
+   <httpj:engine port="9001">
+    <httpj:tlsServerParameters>
+      <sec:keyManagers keyPassword="secret">
+         <sec:keyStore type="JKS" password="secret" resource="keys/jboss.keystore.jks"/>
+      </sec:keyManagers>
+      <sec:trustManagers>
+         <sec:keyStore type="JKS" password="secret" resource="keys/jboss.truststore.jks"/>
+      </sec:trustManagers>
+      <sec:cipherSuitesFilter>
+        <!-- these filters ensure that a ciphersuite with
+          export-suitable or null encryption is used,
+          but exclude anonymous Diffie-Hellman key change as
+          this is vulnerable to man-in-the-middle attacks -->
+        <sec:include>.*_EXPORT_.*</sec:include>
+        <sec:include>.*_EXPORT1024_.*</sec:include>
+        <sec:include>.*_WITH_DES_.*</sec:include>
+        <sec:include>.*_WITH_AES_.*</sec:include>
+        <sec:include>.*_WITH_NULL_.*</sec:include>
+        <sec:exclude>.*_DH_anon_.*</sec:exclude>
+      </sec:cipherSuitesFilter>
+      <sec:clientAuthentication want="true" required="true"/>
+    </httpj:tlsServerParameters>
+   </httpj:engine>
+  </httpj:engine-factory>
+<!--
+  <jaxws:endpoint
+            id="incident"
+            address="https://0.0.0.0:9001/incident"
+            wsdlLocation="META-INF/wsdl/report_incident.wsdl"
+            endpointName="s:ReportIncidentService"
+            serviceName="s:ReportIncidentEndpointService"
+            implementor="org.jboss.fuse.samples.impl.ReportIncidentEndpointImpl"
+            xmlns:s="http://reportincident.example.camel.apache.org" >
+
+        <jaxws:inInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor" />
+        </jaxws:inInterceptors>
+        <jaxws:outInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor" />
+        </jaxws:outInterceptors>
+  </jaxws:endpoint>
+-->
+</beans>

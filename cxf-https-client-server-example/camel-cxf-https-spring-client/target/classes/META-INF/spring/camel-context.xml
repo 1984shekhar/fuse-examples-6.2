@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:ctx="http://www.springframework.org/schema/context"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:camelcxf="http://camel.apache.org/schema/cxf"
+       xmlns:http="http://cxf.apache.org/transports/http/configuration"
+       xmlns:sec="http://cxf.apache.org/configuration/security"
+       xmlns:osgix="http://www.springframework.org/schema/osgi-compendium"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+       http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
+       http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd
+       http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
+
+    <!--http:conduit name="{http://reportincident.example.camel.apache.org}ReportIncidentService.http-conduit-->
+    <http:conduit name="*.http-conduit">
+        <http:tlsClientParameters disableCNCheck="true">
+            <sec:keyManagers keyPassword="secret">
+                <sec:keyStore type="JKS" password="secret"
+                      resource="keys/client.keystore.jks"/>
+            </sec:keyManagers>
+            <sec:trustManagers>
+                <sec:keyStore type="JKS" password="secret"
+                      resource="keys/client.truststore.jks"/>
+            </sec:trustManagers>
+            <sec:cipherSuitesFilter>
+                <sec:include>.*_EXPORT_.*</sec:include>
+                <sec:include>.*_EXPORT1024_.*</sec:include>
+                <sec:include>.*_WITH_DES_.*</sec:include>
+                <sec:include>.*_WITH_AES_.*</sec:include>
+                <sec:include>.*_WITH_NULL_.*</sec:include>
+                <sec:exclude>.*_DH_anon_.*</sec:exclude>
+            </sec:cipherSuitesFilter>
+            </http:tlsClientParameters>
+        <http:client AutoRedirect="true" Connection="Keep-Alive"/>
+    </http:conduit>
+
+    <camelcxf:cxfEndpoint id="producer"
+            address="https://localhost:9001/incident"
+            wsdlURL="META-INF/wsdl/report_incident.wsdl"
+            serviceClass="org.apache.camel.example.reportincident.ReportIncidentEndpoint"
+            endpointName="s:ReportIncidentService"
+            serviceName="s:ReportIncidentEndpointService"
+            xmlns:s="http://reportincident.example.camel.apache.org" >
+        <camelcxf:inInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </camelcxf:inInterceptors>
+        <camelcxf:outInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </camelcxf:outInterceptors>
+    </camelcxf:cxfEndpoint>
+
+   <bean id="myProcessor" class="org.jboss.fuse.samples.processor.MyProcessor"/>
+
+    <camelContext trace="true" xmlns="http://camel.apache.org/schema/spring">
+        <route>
+            <from uri="timer://foo?delay=2s&amp;period=5000&amp;repeatCount=2" />
+            <process ref="myProcessor"/>
+            <to uri="cxf:bean:producer"/>
+        </route>
+    </camelContext>
+
+</beans>
