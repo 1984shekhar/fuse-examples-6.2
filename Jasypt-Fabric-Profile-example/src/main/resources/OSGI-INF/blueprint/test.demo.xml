@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint
+        xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+        xmlns:enc="http://karaf.apache.org/xmlns/jasypt/v1.0.0"
+        xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.2.0"
+        xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.3.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+              http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+              http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+              http://karaf.apache.org/xmlns/jasypt/v1.0.0 http://karaf.apache.org/xmlns/jasypt/v1.0.0">
+
+    <!-- ============================================================== -->
+    <!-- PROPERTIES                                                     -->
+    <!-- Sourcing and decrypting properties for camel and bllueprint    -->
+    <cm:property-placeholder id="fabric-config"
+                             persistent-id="test.profile"
+                             update-strategy="reload">
+        <cm:default-properties>
+            <cm:property name="rest.username" value="csp"/>
+            <cm:property name="rest.password" value="hello"/>
+        </cm:default-properties>
+    </cm:property-placeholder>
+    <!-- for jasypt, password secret -->
+	<bean id="jasypt" class="org.apache.camel.component.jasypt.JasyptPropertiesParser">
+    	<property name="password" value="secret"/>
+	</bean>
+    <!-- <ext:property-placeholder id="classpath-properties"
+                              placeholder-prefix="$["
+                              placeholder-suffix="]">
+        <ext:location>classpath:static.properties</ext:location>
+    </ext:property-placeholder> -->
+
+    <bean id="properties" class="org.apache.camel.component.properties.PropertiesComponent">
+        <property name="locations">
+            <array value-type="java.lang.String">
+                <value>blueprint:fabric-config</value>
+                <!-- uncomment when jasypt is not used -->
+               
+               <!--  <value>blueprint:classpath-properties</value> -->
+            </array>
+        </property>
+         <property name="propertiesParser" ref="jasypt"/>
+    </bean>
+
+</blueprint>
