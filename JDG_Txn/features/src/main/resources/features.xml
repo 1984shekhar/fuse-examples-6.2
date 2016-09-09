@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features name="jdg-cn3-${project.version}">
+
+
+    <feature name="jdg-job-service"  version="${project.version}">
+    	 <feature dependency="true">infinispan-embedded</feature> 
+    	<!--<feature dependency="true">infinispan-core</feature>  -->
+    	<feature>transaction</feature>
+    	<!-- 
+    	<feature>camel-bindy</feature>
+    	 -->
+        <bundle>mvn:com.mycompany.testBundle/job-event-service/${project.version}</bundle>
+    </feature>
+
+    
+
+</features>

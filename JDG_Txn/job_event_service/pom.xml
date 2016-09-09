@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+<modelVersion>4.0.0</modelVersion>
+
+   
+   <groupId>com.mycompany.testBundle</groupId>
+   <artifactId>job-event-service</artifactId>
+   <packaging>bundle</packaging>
+   <version>1.0.0</version>
+   
+   
+  <properties>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <version.camel.components>2.15.1.redhat-620133</version.camel.components>
+    <version.camel-jbossdatagrid>6.6.0.Final-redhat-4</version.camel-jbossdatagrid>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <version.org.infinispan>6.4.0.Final-redhat-4</version.org.infinispan>
+  </properties>
+   
+  <dependencies>
+  <!-- 
+      <dependency>
+         <groupId>org.apache.camel</groupId>
+         <artifactId>camel-bindy</artifactId>
+         <scope>provided</scope>
+      </dependency>
+       -->
+      <dependency>
+        <groupId>org.infinispan</groupId>
+        <artifactId>infinispan-embedded</artifactId>
+        <version>6.4.0.Final-redhat-4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.aries.transaction</groupId>
+        <artifactId>org.apache.aries.transaction.blueprint</artifactId>
+        <version>1.0.1</version>
+      </dependency>
+       <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.6.6</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>1.7.10</version>
+      </dependency>
+   </dependencies>
+      
+   <name>Simple Core to Query JDG: Local Cache</name>
+   <build>
+   
+   		 <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+     
+       <plugins>
+       
+          <plugin>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>maven-bundle-plugin</artifactId>
+            <!-- 
+            <version>2.3.7</version>
+             -->
+            <extensions>true</extensions>
+            <configuration>
+               <instructions>
+               	<DynamicImport-Package>*</DynamicImport-Package>
+                <Import-Package>*</Import-Package>
+                <Export-Package>com.cdg.taxi.job.service</Export-Package>
+               </instructions>
+            </configuration>
+         </plugin>
+         
+         <!-- 
+          <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>target/classes/infinispan.xml</file>
+                                    <type>xml</type>
+                                    <classifier>infinispan</classifier>
+                                </artifact>
+                                <artifact>
+                                    <file>target/classes/jgroups.xml</file>
+                                    <type>xml</type>
+                                    <classifier>jgroups</classifier>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+             -->
+             
+       </plugins>
+   </build>
+
+</project> 
