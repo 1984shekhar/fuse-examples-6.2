@@ -1,0 +1,39 @@
+<!--
+  The contents of this file can be used as an aid to update the settings
+  for your Maven installation, to let it utilise the provided maven
+  repository files for the client. These settings are typically stored in
+  the <user.home.dir>/.m2/settings.xml file, for example this could be:
+
+  Linux: /home/myusername/.m2/settings.xml
+  Windows: C:\Users\myusername\.m2\settings.xml
+-->
+<settings>
+  <profiles>
+    <profile>
+      <id>my-profile</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <id>amq-client-repo</id>
+          <url>file:///usr/share/java/maven-repo</url>
+          <!--
+            If using the zip installation, update the URL above with the
+            location of the maven-repo directory contents from the
+            extracted client zip. For example:
+
+            Linux: file:///path/to/extracted/maven-repo
+            Windows: file://C:\path\to\extracted\maven-repo
+          -->
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+</settings>
