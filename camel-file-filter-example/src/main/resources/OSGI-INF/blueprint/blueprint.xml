@@ -1,0 +1,47 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+           xmlns:camel-cxf="http://camel.apache.org/schema/blueprint/cxf"
+       xmlns:cxfcore="http://cxf.apache.org/blueprint/core"
+           xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+  
+  
+<!--    <camel-cxf:cxfEndpoint id="gateway-ws-impl-v1"
+		address="/monitoring/pms/eventmanager/arrangement/account/v1" 
+		serviceName="l:BatchChannelDcmsService"
+		endpointName="l:BatchChannelDcmsServiceSOAPPort"
+		wsdlURL="classpath:events/arrangement/account/wsdls/contract-v1.wsdl"
+		xmlns:l="http://www.vedaxml.com/events/arrangement/account/v1">
+		<camel-cxf:properties>
+			<entry key="dataFormat" value="MESSAGE" />
+			<entry key="schema-validation-enabled" value="false" />
+		</camel-cxf:properties>
+	</camel-cxf:cxfEndpoint> -->
+	
+	<camel-cxf:cxfEndpoint id="routerEndpoint"
+                     address="http://localhost:9001/router"
+                     serviceClass="com.mycompany.camelcontext.error.AddInterface">
+        <camel-cxf:properties>
+            <entry key="dataFormat" value="MESSAGE"/>
+            <entry key="schema-validation-enabled" value="false" />
+        </camel-cxf:properties>
+     </camel-cxf:cxfEndpoint>
+ 
+  
+  <camelContext  xmlns="http://camel.apache.org/schema/blueprint" id="monitoring-pms-event-manager" trace="true" autoStartup="true" useBreadcrumb="true" useMDCLogging="true" threadNamePattern="#camelId#-thread-#counter#" managementNamePattern="#camelId#" allowUseOriginalMessage="false">
+
+  <endpoint id="globalscape-clean" uri="file:/home/cpandey/NotBackedUp/Downloads/quart2Poll?recursive=true&amp;filter=#cleanAntFilter&amp;noop=true&amp;initialDelay=1000&amp;delay=500" />
+  <!-- <endpoint id="globalscape-clean" uri="file:/home/cpandey/NotBackedUp/Downloads/quart2Poll?recursive=true&amp;filter=#cleanAntFilter&amp;noop=true&amp;initialDelay=1000&amp;delay=500" /> -->
+    <route id="timerToLog">
+      <from ref="globalscape-clean"/>
+      <setBody>
+         <constant>HELLO...</constant>
+      </setBody>
+      <log message="The message contains ${body}"/>
+      <to uri="mock:result"/>
+    </route>
+  </camelContext>
+  
+  <bean id="cleanAntFilter" class="com.mycompany.camelcontext.error.MyFileFilter"/>
+  
+</blueprint>
