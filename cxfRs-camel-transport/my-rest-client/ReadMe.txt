@@ -1,0 +1,1 @@
+osgi:install -s mvn:com.mycompany.test/my-rest-client/1.0.0-SNAPSHOT

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint 
+	xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+    xmlns:cxf="http://camel.apache.org/schema/blueprint/cxf"
+    xmlns:cxfcore="http://cxf.apache.org/blueprint/core"
+    xmlns:camel="http://camel.apache.org/schema/blueprint"
+    xmlns:transport="http://cxf.apache.org/transports/camel/blueprint"
+    xsi:schemaLocation="
+    	http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+        http://camel.apache.org/schema/blueprint/cxf http://camel.apache.org/schema/blueprint/cxf/camel-cxf.xsd
+        http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+        http://cxf.apache.org/transports/camel/blueprint http://cxf.apache.org/schmemas/blueprint/camel.xsd">
+  	
+  	<cm:property-placeholder
+		id="service.bundle.properties"
+		persistent-id="com.mycompany.myservice.test">
+		<cm:default-properties>
+  			<cm:property name="context.shutdown.timeout" value="3" />
+  			<cm:property name="context.shutdownNowOnTimeout" value="true" />
+  			<cm:property name="context.suppressLoggingOnTimeout" value="true" />
+  		</cm:default-properties>
+	</cm:property-placeholder>
+  	<cxf:rsServer 
+		address="camel://direct:server" 
+		id="rs-server">
+		<cxf:serviceBeans>
+			<bean 
+  				class="com.mycompany.test.service.MyRestService" />
+		</cxf:serviceBeans>
+		<cxf:features>
+			<bean 
+				class="org.apache.cxf.feature.LoggingFeature" />
+		</cxf:features>
+		<cxf:providers>
+			<bean 
+				class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</cxf:providers>
+	</cxf:rsServer>
+	<bean
+		id="shutdownStrategy"
+		class="org.apache.camel.impl.DefaultShutdownStrategy">
+		<property
+			name="timeout"
+			value="${context.shutdown.timeout}" />
+		<property
+			name="shutdownNowOnTimeout"
+			value="${context.shutdownNowOnTimeout}" />
+		<property
+			name="suppressLoggingOnTimeout"
+			value="${context.suppressLoggingOnTimeout}" />
+	</bean>
+	<bean
+		id="serviceRouteBuilder"
+		class="com.mycompany.test.routebuilder.ServiceBuilder" />
+	<bean
+		id="activemq"
+		class="org.apache.activemq.camel.component.ActiveMQComponent">
+		<property 
+			name="brokerURL"
+			value="discovery:(static:(tcp://localhost:61618))"/>	
+		<property 
+			name="userName"
+			value="admin"/>	
+		<property 
+			name="password"
+			value="admin"/>	
+	</bean>
+	
+	<transport:destination id="*.camel-destination" camelContextId="rest.test.context" />
+	<!-- 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		CAMEL CONTEXT
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+	<camelContext
+		id="rest.test.context"
+		xmlns="http://camel.apache.org/schema/blueprint" autoStartup="true" streamCache="true">
+		
+		<routeBuilder ref="serviceRouteBuilder"/>
+		<route>
+			<from uri="activemq:queue:com.mycompany.entsvcs.v1.myapi.myresource?asyncConsumer=true&amp;concurrentConsumers=2&amp;maxConcurrentConsumers=4&amp;destination.consumer.prefetchSize=0&amp;exchangePattern=InOut&amp;replyToType=Exclusive&amp;deliveryPersistent=false&amp;cacheLevelName=CACHE_CONSUMER" />
+			<to uri="direct:server" />
+		</route>
+	</camelContext>
+
+</blueprint>

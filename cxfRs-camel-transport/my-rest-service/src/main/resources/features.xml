@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2014 mycompany Corporation. All Rights Reserved.
+  ~ This software is the confidential and proprietary 
+  ~ information of mycompany Corporation.
+  ~
+  ~ ("Confidential Information"). You shall not disclose 
+  ~ such Confidential Information and shall use it only in
+  ~ accordance with the terms of the agreement you entered 
+  ~ into with mycompany Corporation.
+  -->
+
+<features name="${project.artifactId}-${project.version}">
+    <feature name="${project.artifactId}" version="${project.version}"> 	
+    	<details>${project.artifactId}-${project.version}::OSGi Feature</details>
+    	<feature>camel-blueprint</feature>
+        <feature>camel-cxf</feature>
+        <!-- swagger -->
+        <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
+    </feature>
+</features>
