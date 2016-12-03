@@ -1,0 +1,55 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<camelContext trace="true" xmlns="http://camel.apache.org/schema/spring">
+		<camel:dataFormats>
+			<camel:xstream id="xstream-utf8" encoding="UTF-8" />
+			<camel:xstream id="xstream-default" />
+			<camel:xmljson id="xmljson" />
+			<camel:xmljson id="xmljsonWithOptions" forceTopLevelObject="true" trimSpaces="true"
+				rootName="newRoot" skipNamespaces="true" removeNamespacePrefixes="true" expandableProperties="d e" />
+			<camel:xmljson id="JsonToXML" forceTopLevelObject="true" trimSpaces="true"
+				rootName="newRoot" skipNamespaces="true" removeNamespacePrefixes="true" expandableProperties="" />
+			<camel:xmljson id="XMLtoJson" forceTopLevelObject="true" trimSpaces="true"
+				skipNamespaces="true" removeNamespacePrefixes="true" />
+		</camel:dataFormats>
+
+
+		<route id="HelloWorldRoute">
+			<from uri="timer://foo?fixedRate=true&amp;period=10000" />
+			<camel:setProperty propertyName="JsonString">
+				<camel:constant> 
+			 {"menu": {
+				  "id": "file",
+				  "value": "File",
+				  "popup": {
+				    "menuitem": [
+				      {"value": "New", "onclick": "CreateNewDoc()"},
+				      {"value": "Open", "onclick": "OpenDoc()"},
+				      {"value": "Close", "onclick": "CloseDoc()"}
+				    ]
+				  }
+				}} 
+			</camel:constant>
+			</camel:setProperty>
+
+			<camel:log message="JSON String : ${property.JsonString}" loggingLevel="INFO"
+				logName="com.mycompany.example" />
+
+			<camel:setBody>
+				<camel:simple>${property.JsonString}</camel:simple>
+			</camel:setBody>
+
+			<camel:log message="body before: ${body}" loggingLevel="INFO" logName="com.mycompany.example" />
+
+			<unmarshal ref="JsonToXML" />
+
+
+			<camel:log message="body after: ${body}" loggingLevel="INFO" logName="com.mycompany.example" />
+
+
+		</route>
+	</camelContext>
+
+</beans>
