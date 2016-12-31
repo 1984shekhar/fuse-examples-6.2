@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+
+       <bean id="credentials" class="com.amazonaws.auth.BasicAWSCredentials">
+             <argument value="xxxxxxxxxxxxx" />
+             <argument value="yyyyyyyyyyyyy" />
+       </bean>
+
+ <!-- <bean id="awsRegion" class="com.amazonaws.regions.RegionUtils" factory-method="getRegion">
+    <argument value="us-west-2"/>
+  </bean> -->
+
+  <bean id="s3Client" class="com.amazonaws.services.s3.AmazonS3Client">
+    <argument ref="credentials"/>
+   <!--  <property name="region" ref="awsRegion"/> -->
+  </bean>
+
+  <camelContext xmlns="http://camel.apache.org/schema/blueprint">
+   <routeBuilder ref="myBuilder"/>
+  </camelContext>
+  
+<bean id="myBuilder" class="com.mycompany.aws.s3.test.TestAWS" >
+<property name="amazonS3Client" ref="s3Client"/>
+</bean>
+ 
+
+</blueprint>
