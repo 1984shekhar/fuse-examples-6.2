@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+
+<!-- <bean id="clientTest" class="com.mycompany.aws.blueprint.AWSClientTest"/>
+ -->
+  <camelContext xmlns="http://camel.apache.org/schema/blueprint">
+    <route id="timerToLog">
+      <from uri="aws-s3://2015dhairya?amazonS3Client=#s3Client&amp;delay=5000&amp;maxMessagesPerPoll=1"/>
+      <log message="connected ...${body}"/>
+    </route>
+  </camelContext>
+  
+  <bean id="credentials" class="com.amazonaws.auth.BasicAWSCredentials">
+             <argument value="XXXXXX" />
+             <argument value="YYYYYY" />
+  </bean>
+  <bean id="s3Client" class="com.mycompany.aws.blueprint.AS3Client">
+    <argument ref="credentials"/>
+   <property name="regionName" value="us-west-2"/>
+  </bean>
+
+</blueprint>
