@@ -28,15 +28,15 @@
 
 	<name>hibernatetx :: Fuse CXF Hibernate nonxa</name>
 
-	<properties>
-		<jboss.fuse.bom.version>6.2.1.redhat-084</jboss.fuse.bom.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven-compiler-plugin-version>3.3</maven-compiler-plugin-version>
-		<maven-resources-plugin-version>2.5-redhat-1</maven-resources-plugin-version>
-		<maven-bundle-plugin-version>2.5.4</maven-bundle-plugin-version>
-		<maven-surefire-plugin-version>2.12.2-redhat-1</maven-surefire-plugin-version>
-		<build-helper-maven-plugin-version>1.5-redhat-1</build-helper-maven-plugin-version>
-	</properties>
+  <properties>
+                <jboss.fuse.bom.version>6.1.0.redhat-379</jboss.fuse.bom.version>
+                <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+                <maven-compiler-plugin-version>3.3</maven-compiler-plugin-version>
+                <maven-resources-plugin-version>2.5</maven-resources-plugin-version>
+                <maven-bundle-plugin-version>2.5.4</maven-bundle-plugin-version>
+                <maven-surefire-plugin-version>2.12.2</maven-surefire-plugin-version>
+                <build-helper-maven-plugin-version>1.5</build-helper-maven-plugin-version>
+        </properties>
 
 	<modules>
 		<module>features</module>
