@@ -37,21 +37,22 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
+			<version>4.2.9.Final</version>
 		</dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-osgi</artifactId>
-            <scope>provided</scope>
+            <version>4.2.9.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-envers</artifactId>
-            <scope>provided</scope>
+            <version>4.2.9.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <scope>provided</scope>
+            <version>4.2.9.Final</version>
         </dependency>
 	</dependencies>
 
