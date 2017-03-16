@@ -1,0 +1,18 @@
+----------------------------------------------------------------
+Thu Jun 16 09:20:37 IST 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.1 - (1616546): instance a816c00e-0155-5754-ffb9-000000871320 
+on database directory memory:/home/cpandey/Desktop/camel-example-mybatis/mybatis with class loader java.net.URLClassLoader@c0e232de 
+Loaded from file:/home/cpandey/.m2/repository/org/apache/derby/derby/10.11.1.1/derby-10.11.1.1.jar
+java.vendor=IBM Corporation
+java.runtime.version=pxa6470_27sr3fp30-20160112_01 (SR3 FP30)
+java.fullversion=JRE 1.7.0 IBM J9 2.7 Linux amd64-64 Compressed References 20151222_283006 (JIT enabled, AOT enabled)
+J9VM - R27_Java727_SR3_20151222_1037_B283006
+JIT  - tr.r13.java.sr3.fp30_20151209_107107.01
+GC   - R27_Java727_SR3_20151222_1037_B283006_CMPRSS
+J9CL - 20151222_283006
+user.dir=/home/cpandey/Desktop/camel-example-mybatis
+os.name=Linux
+os.arch=amd64
+os.version=2.6.32-573.22.1.el6.x86_64
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

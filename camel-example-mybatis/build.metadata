@@ -1,0 +1,11 @@
+# Created by buildmetadata-maven-plugin 1.7.0 ( SHA: 6f444cae ) 
+build.artifactId=camel-example-mybatis
+build.groupId=org.apache.camel
+build.java.runtime.name=Java(TM) SE Runtime Environment
+build.java.runtime.version=pxa6470_27sr3fp30-20160112_01 (SR3 FP30)
+build.java.vendor=IBM Corporation
+build.java.vm=IBM J9 VM
+build.maven.execution.cmdline=-B -Dmaven.test.skip\=true -DskipTests clean install
+build.maven.version=3.2.1
+build.version=2.15.1.redhat-621084
+build.version.full=2.15.1.redhat-621084
