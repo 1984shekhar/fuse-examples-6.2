@@ -19,15 +19,16 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
+<!--   <parent>
     <groupId>org.apache.camel</groupId>
     <artifactId>examples</artifactId>
     <version>2.15.1.redhat-621084</version>
-  </parent>
-
+  </parent> -->
+ <groupId>org.apache.camel</groupId>
   <artifactId>camel-example-mybatis</artifactId>
   <packaging>bundle</packaging>
   <name>Camel :: Example :: MyBatis</name>
+  <version>2.15.1.redhat-621084</version>
   <description>An example for showing Camel using MyBatis SQL mapper component</description>
 
   <properties>
@@ -40,20 +41,24 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-blueprint</artifactId>
+      <version>2.15.1.redhat-621084</version>
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-mybatis</artifactId>
+      <version>2.15.1.redhat-621084</version>
     </dependency>
 
     <!-- jdbc -->
     <dependency>
       <groupId>org.apache.derby</groupId>
       <artifactId>derby</artifactId>
+      <version>10.11.1.1</version>
     </dependency>
     <dependency>
       <groupId>commons-dbcp</groupId>
       <artifactId>commons-dbcp</artifactId>
+      <version>1.4</version>
     </dependency>
 
   </dependencies>
@@ -81,6 +86,29 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+         <!-- to generate the MANIFEST-FILE of the bundle -->
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>2.3.7</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+           <id>bundle-manifest</id>
+           <phase>process-classes</phase>
+           <goals>
+               <goal>manifest</goal>
+           </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <instructions>
+            <Bundle-SymbolicName>camel-example-mybatis</Bundle-SymbolicName>
+            <Private-Package>org.apache.camel.example.mybatis</Private-Package>
+            <Import-Package>*</Import-Package>
+          </instructions>
+        </configuration>
       </plugin>
     </plugins>
   </build>
