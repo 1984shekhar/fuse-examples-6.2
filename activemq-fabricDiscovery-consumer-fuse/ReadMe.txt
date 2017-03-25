@@ -1,0 +1,21 @@
+Camel Router Project for Blueprint (OSGi)
+=========================================
+
+To build this project use
+
+    mvn install
+
+To run the project you can execute the following Maven goal
+
+    mvn camel:run
+
+To deploy the project in OSGi. For example using Apache ServiceMix
+or Apache Karaf. You can run the following command from its shell:
+
+    osgi:install -s mvn:com.mycompany/activemq-example/1.0
+
+create personnel.records queue and insert some data to this queue.
+
+For more help see the Apache Camel documentation
+
+    http://camel.apache.org/
