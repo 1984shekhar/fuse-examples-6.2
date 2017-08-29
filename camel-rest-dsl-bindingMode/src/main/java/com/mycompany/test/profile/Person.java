@@ -1,5 +1,9 @@
 package com.mycompany.test.profile;
 
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Person {
 	
 private String name;
