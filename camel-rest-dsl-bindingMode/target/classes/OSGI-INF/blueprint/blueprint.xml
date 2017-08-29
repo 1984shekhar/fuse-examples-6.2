@@ -5,16 +5,10 @@
     <camelContext id="test_rest_dsl" xmlns="http://camel.apache.org/schema/blueprint">
         <restConfiguration bindingMode="auto" component="jetty"
             port="9091" scheme="http"/>
-        <rest consumes="application/json,application/xml"
-            path="/cbr-web-services/rest/itineraries/" produces="application/json,application/pdf,application/xml">
-            <description>this is a rest GET to retreive PDF or Version
-this is a rest POST to create a PDF</description>
-            <get produces="application/json,application/pdf" uri="/test">
-                <description>Get PDF/Version</description>
-                <to uri="direct:processRequest"/>
-            </get>
+        <rest path="/cbr-web-services/rest/itineraries/">
+
             <post type="com.mycompany.test.profile.Person">
-                <description>post a PDF</description>
+                <description>Post request</description>
                 <to uri="direct:processRequest"/>
             </post>
         </rest>
