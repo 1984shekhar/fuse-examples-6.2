@@ -20,7 +20,7 @@ public final static String JNDI_FACTORY="org.apache.activemq.jndi.ActiveMQInitia
 //*************** Connection Factory JNDI name *************************
 public final static String JMS_FACTORY="ConnectionFactory";
 //*************** Queue JNDI name *************************
-public final static String QUEUE="dynamicQueues/TestQ";
+public final static String QUEUE="dynamicQueues/MY.QUEUE";
  
 private QueueConnectionFactory qconFactory;
 private QueueConnection qcon;
@@ -38,6 +38,8 @@ qsession = qcon.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
 queue = (Queue) ctx.lookup(queueName);
 qsender = qsession.createSender(queue);
 msg = qsession.createTextMessage();
+//Messsage Selector in producer
+//msg.setStringProperty("criteria", "B");
 qcon.start();
 }
  
