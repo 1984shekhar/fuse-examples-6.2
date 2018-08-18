@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd        http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+    <bean class="org.apache.activemq.camel.component.ActiveMQComponent" id="activemq">
+        <property name="brokerURL" value="tcp://localhost:61616"/>
+        <property name="userName" value="admin"/>
+        <property name="password" value="admin"/>
+    </bean>
+    <!-- Here is a sample which processes the input files (leaving them in place 
+		- see the 'noop' flag), and sends them on a JMS queue. This queue is watched 
+		by another route which then performs content based routing on the messages 
+		using XPath. -->
+    <camelContext id="testConcurrentConsumers" xmlns="http://camel.apache.org/schema/blueprint" trace="true">
+        <route id="_route1">
+            <from id="_from1" uri="timer://foo?fixedRate=true&amp;period=30000"/>
+            <setBody><constant>HelloALL</constant></setBody>
+            <setHeader headerName="JMSReplyTo">
+            <constant>bar</constant>
+            </setHeader>
+            <setExchangePattern pattern="InOut"/>
+            <to id="_to1" uri="activemq:queue:foo?disableReplyTo=true&amp;preserveMessageQos=true" />
+           <!--  <to id="_to1" uri="activemq:queue:foo?disableReplyTo=true"/> -->
+            <log message="headers1...${in.headers}....body1 .... ${body}"/>
+            
+            <!-- <to id="_to1" uri="activemq:queue:foo?replyTo=queue:bar&amp;disableReplyTo=true" /> -->
+        </route>
+        <route id="_route2">
+            <from id="_from2" uri="activemq:queue:foo?disableReplyTo=true"/>
+            <to id="_to2" uri="activemq:queue:mockfoo" />
+           <transform><simple>Bye ${body}</simple></transform>
+           <log message="headers2...${in.headers}....body2 .... ${body}"/>
+        </route>
+        <route id="_route3">
+            <from id="_from3" uri="activemq:queue:bar"/>
+            <to id="_to3" uri="activemq:queue:mockbar" />
+            <log message="headers3...${in.headers}....body3 .... ${body}"/>
+        </route>
+        
+    </camelContext>
+</blueprint>
