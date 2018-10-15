@@ -22,3 +22,12 @@ Selector Filter with broker configuration:
         </virtualDestinations>
       </virtualDestinationInterceptor>
     </destinationInterceptors>
+
+    
+    
+For QueueReceive_Artemis, broker.xml should have:
+ <address name="TestA">
+   <anycast>
+      <queue name="TestB" />
+   </anycast>
+ </address>
