@@ -79,7 +79,7 @@ class RequestReply_Requestor {
        {
        RequestReply_Requestor qr = new RequestReply_Requestor();
        qr.processMessage();
-       System.out.println("JMS Ready To Receive Messages (To quit, send a  message from QueueSender.class).");
+       //System.out.println("JMS Ready To Receive Messages (To quit, send a  message from QueueSender.class).");
        // Wait until a "quit" message has been received.
    
        qr.close();

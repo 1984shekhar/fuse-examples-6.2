@@ -19,13 +19,6 @@ class RequestReply_Replier {
        
        public void processMessage() {
     	   
-/*            Connection connection = null;
-            Session session = null;
-            Destination reqQ = null;
-            Destination repQ = null;
-            MessageProducer producer = null;
-            MessageConsumer consumer = null;
-            */
             try {
               // Create a connection factory
               cf = new ActiveMQConnectionFactory("tcp://localhost:61616");
