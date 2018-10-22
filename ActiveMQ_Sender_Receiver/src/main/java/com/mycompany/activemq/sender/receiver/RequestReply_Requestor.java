@@ -15,7 +15,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 /*
  * Implementation of requester class
  */
-class Requestor {
+class RequestReply_Requestor {
 	 private QueueConnectionFactory cf = null;
 	 private Connection connection = null;
 	 private Session session = null;
@@ -83,7 +83,7 @@ class Requestor {
        return;
        }
        //InitialContext ic = getInitialContext(args[0]);
-       Requestor qr = new Requestor();
+       RequestReply_Requestor qr = new RequestReply_Requestor();
      //  qr.init(ic);
        qr.processMessage();
        System.out.println("JMS Ready To Receive Messages (To quit, send a  message from QueueSender.class).");
