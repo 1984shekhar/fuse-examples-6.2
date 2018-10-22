@@ -7,8 +7,6 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.QueueConnectionFactory;
 import javax.jms.Session;
-import javax.naming.Context;
-import javax.naming.NamingException;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
@@ -23,11 +21,6 @@ class RequestReply_Requestor {
 	 private Destination repQ = null;
 	 private MessageProducer producer = null;
 	 private MessageConsumer consumer = null;
-	 private boolean quit = false;
-     //public final static String JNDI_FACTORY="org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory";
-       public final static String JNDI_FACTORY="org.apache.activemq.jndi.ActiveMQInitialContextFactory";
-       //*************** Connection Factory JNDI name *************************
-       public final static String JMS_FACTORY="ConnectionFactory";      
        public void processMessage() {
     	  
             
@@ -77,6 +70,7 @@ class RequestReply_Requestor {
        // Start thread
        public static void main(String[] args) throws Exception
        {
+       System.out.println("Within Send");
        RequestReply_Requestor qr = new RequestReply_Requestor();
        qr.processMessage();
        //System.out.println("JMS Ready To Receive Messages (To quit, send a  message from QueueSender.class).");

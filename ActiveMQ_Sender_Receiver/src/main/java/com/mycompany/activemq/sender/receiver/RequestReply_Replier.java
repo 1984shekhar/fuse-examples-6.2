@@ -1,11 +1,13 @@
 package com.mycompany.activemq.sender.receiver;
 
-import java.util.Hashtable;
-import javax.jms.*;
-import javax.management.RuntimeErrorException;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import javax.jms.Connection;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
+import javax.jms.QueueConnectionFactory;
+import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 class RequestReply_Replier {
@@ -25,7 +27,7 @@ class RequestReply_Replier {
               // Create JMS objects
               connection = cf.createConnection("admin","admin");
               session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-              reqQ = session.createQueue("queue:///REQUESTQ");
+              reqQ = session.createQueue("REQUESTQ");
           
               // Create consumer to read requests
               consumer = session.createConsumer(reqQ);
@@ -61,7 +63,8 @@ class RequestReply_Replier {
 
 
     public static void main(String[] args) throws JMSException {
-        // TODO Auto-generated method stub             
+        // TODO Auto-generated method stub
+    	System.out.println("Within receiver");
         RequestReply_Replier rep = new RequestReply_Replier();
         rep.processMessage();
         rep.close();
