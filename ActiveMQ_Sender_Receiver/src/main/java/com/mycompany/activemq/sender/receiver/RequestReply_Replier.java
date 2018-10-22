@@ -19,13 +19,13 @@ class RequestReply_Replier {
        
        public void processMessage() {
     	   
-            Connection connection = null;
+/*            Connection connection = null;
             Session session = null;
             Destination reqQ = null;
             Destination repQ = null;
             MessageProducer producer = null;
             MessageConsumer consumer = null;
-            
+            */
             try {
               // Create a connection factory
               cf = new ActiveMQConnectionFactory("tcp://localhost:61616");
@@ -59,12 +59,18 @@ class RequestReply_Replier {
             }
        }
 
-    
+       public void close()throws JMSException
+       {
+       consumer.close();
+       session.close();
+       connection.close();
+       }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JMSException {
         // TODO Auto-generated method stub             
         RequestReply_Replier rep = new RequestReply_Replier();
         rep.processMessage();
+        rep.close();
     }
     }

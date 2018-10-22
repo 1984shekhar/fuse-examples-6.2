@@ -40,9 +40,9 @@ class RequestReply_Requestor {
               session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
               
               // Create destination to send requests
-              reqQ = session.createQueue("queue:///REQUESTQ");
+              reqQ = session.createQueue("REQUESTQ");
               // Create destination to read replies
-              repQ = session.createQueue("queue:///REPLYQ");
+              repQ = session.createQueue("REPLYQ");
               
               // Create producer
               producer = session.createProducer(reqQ);
@@ -77,14 +77,7 @@ class RequestReply_Requestor {
        // Start thread
        public static void main(String[] args) throws Exception
        {
-       if (args.length != 1)
-       {
-       System.out.println("Usage: java QueueReceive URL");
-       return;
-       }
-       //InitialContext ic = getInitialContext(args[0]);
        RequestReply_Requestor qr = new RequestReply_Requestor();
-     //  qr.init(ic);
        qr.processMessage();
        System.out.println("JMS Ready To Receive Messages (To quit, send a  message from QueueSender.class).");
        // Wait until a "quit" message has been received.
@@ -98,40 +91,4 @@ class RequestReply_Requestor {
        session.close();
        connection.close();
        }
-       
-       public void init(Context ctx) throws NamingException, JMSException
-       {
-       //qconFactory = (QueueConnectionFactory) ctx.lookup(JMS_FACTORY);
-    /*	   cf  = new ActiveMQConnectionFactory();
-       qcon = qconFactory.createConnection("admin","admin");
-       qsession = qcon.createSession(true, Session.AUTO_ACKNOWLEDGE);
-
-       //queue = (Queue) ctx.lookup("TestA::TestB");
-       queue = qsession.createQueue(QUEUE);
-       qconsumer = qsession.createConsumer(queue);
-       qconsumer.setMessageListener(this);
-
-       qcon.start();*/
-       	
-       /*	ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin","admin","tcp://localhost:61616");
-       	 connectionFactory.getRedeliveryPolicy().setMaximumRedeliveries(0);
-           // Create a Connection
-       	 qcon = (QueueConnection) connectionFactory.createConnection();
-       	 qsession = qcon.createQueueSession(true, Session.CLIENT_ACKNOWLEDGE);
-       	 queue = (Queue) ctx.lookup(queueName);
-       	 qreceiver = qsession.createReceiver(queue);
-       	 qreceiver.setMessageListener(this);
-       	 qcon.start();*/
-        
-           // Receive a message with the JMS API
-
-       }
-  /*     private static InitialContext getInitialContext(String url) throws NamingException
-       {
-       Hashtable env = new Hashtable();
-       env.put(Context.INITIAL_CONTEXT_FACTORY, JNDI_FACTORY);
-       env.put(Context.PROVIDER_URL, url);
-       return new InitialContext(env);
-       }
-*/
     }
