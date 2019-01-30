@@ -12,7 +12,7 @@ public class QueueBrowse
 {
   public final static String JNDI_FACTORY="org.apache.activemq.jndi.ActiveMQInitialContextFactory";
   public final static String JMS_FACTORY="ConnectionFactory";
-  public final static String QUEUE="dynamicQueues/12345";
+  public final static String QUEUE="dynamicQueues/TestQ123";
   public final static String username="admin";
   public final static String password="admin";
 
@@ -64,7 +64,7 @@ public class QueueBrowse
         System.out.println("\tCorrelation ID " + mqMessage.getJMSCorrelationID());
         System.out.println("\tReply to       " + mqMessage.getJMSReplyTo());
         System.out.println("\tMessage type   " + mqMessage.getJMSType());
-        System.out.println("\tJMSActiveMQBrokerInTime  " + new Date(Long.valueOf(""+mqMessage.getObjectProperty("JMSActiveMQBrokerInTime"))));
+        System.out.println("\tJMSActiveMQBrokerInTime  " + mqMessage.getObjectProperty("JMSActiveMQBrokerInTime"));
         System.out.println("\tJMSActiveMQBrokerOutTime  " + mqMessage.getObjectProperty("JMSActiveMQBrokerOutTime"));
         if (mqMessage instanceof TextMessage) {
           System.out.println("\tTextMessage    \"" +((TextMessage)mqMessage).getText() + "\"");
