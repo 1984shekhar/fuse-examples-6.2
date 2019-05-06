@@ -31,3 +31,8 @@ For QueueReceive_Artemis, broker.xml should have:
       <queue name="TestB" />
    </anycast>
  </address>
+ 
+ 
+ #Run using maven commandline, in pom.xml there is a plugin exec-maven-plugin.
+ 
+ mvn exec:java -D"exec.mainClass"="com.mycompany.activemq.sender.receiver.TopicReceive" -D"exec.args"="tcp://10.74.254.116:61616"
