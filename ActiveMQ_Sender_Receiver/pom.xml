@@ -121,12 +121,44 @@
         </configuration>
       </plugin>
 
-      <!-- allows the route to be ran via 'mvn camel:run' -->
-      <plugin>
-        <groupId>org.apache.camel</groupId>
-        <artifactId>camel-maven-plugin</artifactId>
-        <version>2.15.1.redhat-621084</version>
-      </plugin>
+      <!-- allows the route to be ran via 'mvn commandline' -->
+ <plugin>
+  <groupId>org.codehaus.mojo</groupId>
+  <artifactId>exec-maven-plugin</artifactId>
+  <version>1.2.1</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>java</goal>
+      </goals>
+    </execution>
+  </executions>
+  <configuration>
+    <mainClass>com.example.Main</mainClass>
+    <arguments>
+      <argument>foo</argument>
+      <argument>bar</argument>
+    </arguments>
+  </configuration>
+</plugin>
+<plugin>
+  <groupId>org.codehaus.mojo</groupId>
+  <artifactId>exec-maven-plugin</artifactId>
+  <version>1.2.1</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>java</goal>
+      </goals>
+    </execution>
+  </executions>
+  <configuration>
+    <mainClass>com.mycompany.activemq.sender.receiver.TopicReceive</mainClass>
+    <arguments>
+      <argument>tcp://localhost:61616</argument>
+    </arguments>
+  </configuration>
+  </plugin>     
     </plugins>
   </build>
 
