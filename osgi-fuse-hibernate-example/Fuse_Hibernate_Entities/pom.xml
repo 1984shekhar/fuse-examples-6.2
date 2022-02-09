@@ -15,7 +15,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		     <hibernate.version>4.2.19.Final</hibernate.version>
+		     <hibernate.version>5.4.24.Final</hibernate.version>
 		      <persistence-file>META-INF/persistence.xml</persistence-file>
         <aries.transaction.jdbc.version>2.1.1</aries.transaction.jdbc.version>
         <osgi-import-pkg>
