@@ -15,7 +15,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <esper-version>4.7.0</esper-version>
-	<spring-version>3.1.1.RELEASE</spring-version>
+	<spring-version>5.3.19</spring-version>
   </properties>
 
   <repositories>
