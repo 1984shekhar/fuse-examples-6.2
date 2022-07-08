@@ -43,7 +43,7 @@
         <slf4j.version>1.7.10</slf4j.version>
         <logback.version>1.1.2</logback.version>
         <karaf.version>2.4.0.redhat-621084</karaf.version>
-        <camel.version>2.15.1.redhat-621084</camel.version>
+        <camel.version>2.24.0</camel.version>
         <activemq.version>5.11.0.redhat-621084</activemq.version>
         <!--hibernate.version>4.2.19.Final-redhat-1</hibernate.version-->
         <hibernate.version>4.2.19.Final</hibernate.version>
