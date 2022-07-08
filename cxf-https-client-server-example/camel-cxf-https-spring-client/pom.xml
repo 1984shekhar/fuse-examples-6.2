@@ -27,7 +27,7 @@
     <packaging>bundle</packaging>
     
     <properties>
-        <camel.version>2.15.1.redhat-621084</camel.version>
+        <camel.version>2.24.0</camel.version>
         <cxf.version>3.0.4.redhat-621084</cxf.version>
         <spring.version>3.2.12.RELEASE</spring.version>
         <wss4j.version>2.0.3</wss4j.version>
